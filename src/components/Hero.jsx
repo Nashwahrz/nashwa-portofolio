@@ -15,7 +15,7 @@ const useHeroStyles = (isPhotoHovered, isButtonHovered) => {
 
     // Gaya untuk Tombol CTA
     const buttonStyle = {
-        display: 'inline-flex', // Menggunakan inline-flex untuk centering di dalam margin auto
+        display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
         gap: '10px',
@@ -24,7 +24,7 @@ const useHeroStyles = (isPhotoHovered, isButtonHovered) => {
         fontSize: '1.1em',
         fontWeight: '700',
         letterSpacing: '0.5px',
-        textDecoration: 'none', // Link tidak bergaris bawah
+        textDecoration: 'none',
         background: isButtonHovered 
             ? `linear-gradient(135deg, ${accentColor}, ${primaryColor})`
             : `linear-gradient(135deg, ${primaryColor}, ${accentColor})`,
@@ -42,8 +42,8 @@ const useHeroStyles = (isPhotoHovered, isButtonHovered) => {
     // Gaya untuk Foto Profil
     const photoContainerStyle = {
         position: 'relative',
-        width: '220px',
-        height: '220px',
+        width: '180px', // Dikecilkan untuk HP
+        height: '180px', // Dikecilkan untuk HP
         borderRadius: '50%',
         boxShadow: isPhotoHovered 
             ? `0 0 0 8px ${primaryColor}` 
@@ -62,13 +62,12 @@ function Hero() {
     const [isPhotoHovered, setIsPhotoHovered] = React.useState(false);
     const [isButtonHovered, setIsButtonHovered] = React.useState(false);
 
-    // Dihilangkan dari state karena sudah ada di useHeroStyles
     const { darkBg, primaryColor, accentColor, lightText, mutedText, buttonStyle, photoContainerStyle } = 
         useHeroStyles(isPhotoHovered, isButtonHovered);
 
     const nama = "Nashwa Harzathi Rahma";
     const tagline = "Web & Mobile Developer";
-    const ringkasan = "Code. Create. Connect"; // Tagline yang sangat ringkas dan kuat
+    const ringkasan = "Code. Create. Connect";
     const motto = "Menciptakan pengalaman pengguna yang luar biasa."; 
     const fotoUrl = "/awa.png";
 
@@ -87,14 +86,32 @@ function Hero() {
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
             }}
         >
-          
-
-            <div style={{ maxWidth: '900px', position: 'relative', zIndex: 1, margin: '0 auto', textAlign: 'center' }}>
+            
+            <div style={{ 
+                maxWidth: '900px', 
+                position: 'relative', 
+                zIndex: 1, 
+                margin: '0 auto', 
+                textAlign: 'center' 
+            }}>
                 
                 {/* --- JUDUL / BADGE ATAS --- */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '40px', opacity: 0.8 }}>
+                <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    gap: '8px', 
+                    marginBottom: '40px', 
+                    opacity: 0.8 
+                }}>
                     <Sparkles size={16} color={accentColor} />
-                    <span style={{ fontSize: '0.95em', fontWeight: '500', color: accentColor, letterSpacing: '1px', textTransform: 'uppercase' }}>
+                    <span style={{ 
+                        fontSize: '0.95em', 
+                        fontWeight: '500', 
+                        color: accentColor, 
+                        letterSpacing: '1px', 
+                        textTransform: 'uppercase' 
+                    }}>
                         Selamat datang di portfolio saya
                     </span>
                 </div>
@@ -106,7 +123,7 @@ function Hero() {
                         onMouseEnter={() => setIsPhotoHovered(true)} 
                         onMouseLeave={() => setIsPhotoHovered(false)}
                     >
-                        {/* Glow ring background (di dalam photoContainerStyle) */}
+                        {/* Glow ring background */}
                         <div style={{
                             position: 'absolute', inset: '-10px', borderRadius: '50%',
                             background: `linear-gradient(135deg, ${accentColor}, ${primaryColor})`,
@@ -122,7 +139,7 @@ function Hero() {
                             style={{
                                 position: 'relative', width: '100%', height: '100%', borderRadius: '50%',
                                 objectFit: 'cover', border: `3px solid ${darkBg}`,
-                                boxShadow: `0 10px 40px rgba(6, 182, 212, 0.1)`, // Shadow default
+                                boxShadow: `0 10px 40px rgba(6, 182, 212, 0.1)`,
                                 transition: 'all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)', cursor: 'pointer'
                             }}
                         />
@@ -131,21 +148,28 @@ function Hero() {
 
                 {/* --- JUDUL UTAMA --- */}
                 <h1 style={{
-                    fontSize: 'clamp(3em, 9vw, 4.5em)', 
+                    fontSize: 'clamp(3em, 10vw, 4.5em)', // Disesuaikan untuk HP
                     fontWeight: '800',
                     marginBottom: '10px',
                     lineHeight: '1.1',
                     background: `linear-gradient(135deg, ${lightText}, ${accentColor})`,
                     WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-                    display: 'block', margin: '0 auto'
+                    display: 'block', margin: '0 auto',
+                    maxWidth: '800px'
                 }}>
                     Halo, Saya <span style={{ color: lightText, textShadow: `0 0 10px ${accentColor}` }}>{nama}</span>
                 </h1>
 
                 {/* --- SUB-TAGLINE (Keahlian) --- */}
                 <div style={{
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '20px',
-                    marginBottom: '30px', flexWrap: 'wrap', margin: '0 auto'
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    gap: '20px',
+                    marginBottom: '30px', 
+                    flexWrap: 'wrap', 
+                    margin: '0 auto',
+                    padding: '0 10px'
                 }}>
                     <p style={{ fontSize: 'clamp(1.2em, 3vw, 1.6em)', fontWeight: '600', color: primaryColor, margin: 0 }}>
                         {tagline}
@@ -157,7 +181,7 @@ function Hero() {
                 
                 {/* --- RINGKASAN/MOTTO --- */}
                 <p style={{
-                    fontSize: 'clamp(1.5em, 5vw, 2.2em)', // Motto dibuat lebih besar
+                    fontSize: 'clamp(1.5em, 5vw, 2.2em)',
                     fontWeight: '600',
                     color: accentColor,
                     margin: '0 auto 15px auto',
@@ -179,7 +203,7 @@ function Hero() {
 
                 {/* --- CTA BUTTON (Link Anchor) --- */}
                 <a 
-                    href="#projects" // Navigasi ke Projects Section
+                    href="#projects"
                     onMouseEnter={() => setIsButtonHovered(true)}
                     onMouseLeave={() => setIsButtonHovered(false)}
                     style={buttonStyle}
@@ -188,9 +212,8 @@ function Hero() {
                     <ArrowRight size={20} strokeWidth={3} />
                 </a>
 
-                {/* Scroll indicator (Dibiarkan tetap) */}
-                <div style={{ /* ... */ }}>
-                    {/* ... kode scroll indicator ... */}
+                {/* Scroll indicator (Placeholder) */}
+                <div style={{}}>
                 </div>
             </div>
         </section>
