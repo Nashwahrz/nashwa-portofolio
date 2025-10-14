@@ -1,0 +1,32 @@
+/* src/components/Header.module.css */
+
+.headerContainer {
+    /* Gradien Transparan: Menggunakan rgba untuk transparansi */
+    background-image: linear-gradient(90deg, rgba(0, 51, 102, 0.9) 0%, rgba(0, 122, 204, 0.9) 100%); 
+
+    /* EFEK KACA BEKU (FROSTED GLASS) */
+    backdrop-filter: blur(8px); /* Membuat latar belakang di bawahnya tampak buram */
+    -webkit-backdrop-filter: blur(8px); /* Dukungan untuk Safari */
+
+    padding: 20px 60px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000; 
+
+    /* SHADOW CAHAYA (GLOW) */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), /* Shadow biasa */
+                0 0 20px rgba(97, 218, 251, 0.5); /* SHADOW CAHAYA BIRU */
+}
+
+.headerTitle {
+    color: #FFFFFF; 
+    font-size: 1.8em;
+    letter-spacing: 1px;
+    /* Text shadow untuk penekanan */
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8); 
+}
