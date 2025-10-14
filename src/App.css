@@ -1,9 +1,28 @@
 #root {
-  max-width: 1280px;
+  /* Hapus max-width agar konten responsif. Margin auto dipertahankan. */
+  /* max-width: 1280px; <--- DIHAPUS */ 
   margin: 0 auto;
-  padding: 2rem;
+  
+  /* Padding default untuk layar kecil (HP) */
+  padding: 0 1rem; /* Padding horizontal 1rem (sekitar 16px) */
+  
   text-align: center;
 }
+
+/* -------------------------------------- */
+/* Media Query untuk Desktop/Layar Lebar */
+/* -------------------------------------- */
+@media (min-width: 1024px) {
+  #root {
+    /* Tetapkan max-width dan padding besar kembali hanya untuk layar lebar */
+    max-width: 1280px;
+    padding: 2rem; /* Padding asli Anda untuk desktop */
+  }
+}
+
+/* -------------------------------------- */
+/* Gaya Lain (Tidak Berubah) */
+/* -------------------------------------- */
 
 .logo {
   height: 6em;
