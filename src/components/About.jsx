@@ -41,7 +41,7 @@ function About() {
         <section 
             id="about" 
             style={{ 
-                // PERBAIKAN: Padding vertikal responsif, Padding horizontal dihilangkan
+                // PERBAIKAN: Padding vertikal responsif, Padding horizontal dihilangkan (menjadi 0)
                 padding: 'clamp(60px, 10vh, 100px) 0', 
                 
                 backgroundColor: darkBg,
@@ -54,10 +54,8 @@ function About() {
                 overflow: 'hidden'
             }}
         >
-            {/* Background decoration (Dihilangkan untuk meringkas kode) */}
-
-            {/* Menghapus tag <style> (asumsi animasi di CSS Global) */}
-
+            {/* Menghapus tag <style> karena animasi harus didefinisikan di CSS Global */}
+            
             <div style={{ maxWidth: '1100px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
                 
                 {/* Header (Font size menggunakan clamp) */}
@@ -85,20 +83,20 @@ function About() {
                 <div 
                     style={{
                         display: 'flex',
-                        flexWrap: 'wrap',
+                        flexWrap: 'wrap', // Pastikan wrap terjadi saat ruang tidak cukup
                         alignItems: 'stretch',
                         justifyContent: 'space-between',
                         textAlign: 'left',
-                        gap: '50px'
+                        gap: '40px', // Mengurangi gap sedikit
+                        padding: '0 10px' // Padding agar konten tidak menempel pada pinggir #root
                     }}
                 >
                     {/* Kolom Kiri: Teks Cerita */}
                     <div 
                         style={{ 
                             flex: 1, 
-                            minWidth: '0', // PERBAIKAN: Mengatur minWidth ke 0 untuk fleksibilitas HP
-                            // Tambahkan padding agar tidak menempel di pinggir (#root padding)
-                            padding: '0 10px', 
+                            minWidth: '280px', // PERBAIKAN: Mengatur lebar minimum yang masuk akal di HP
+                            // Hapus animasi inline: animation: 'slideInLeft 0.8s ease-out'
                         }}
                     >
                         <h3 style={{ 
@@ -131,10 +129,9 @@ function About() {
                     <div 
                         style={{ 
                             flex: 1, 
-                            minWidth: '0', // PERBAIKAN: Mengatur minWidth ke 0 untuk fleksibilitas HP
+                            minWidth: '280px', // PERBAIKAN: Mengatur lebar minimum yang masuk akal di HP
                             textAlign: 'center',
-                            // Tambahkan padding agar tidak menempel di pinggir (#root padding)
-                            padding: '0 10px', 
+                            // Hapus animasi inline: animation: 'slideInRight 0.8s ease-out'
                         }}
                         onMouseEnter={() => setHoveredCard(true)}
                         onMouseLeave={() => setHoveredCard(false)}
@@ -172,7 +169,8 @@ function About() {
                                 padding: 0, 
                                 textAlign: 'left',
                                 margin: '0 auto',
-                                maxWidth: '300px' 
+                                // Menghapus maxWidth pada ul agar ia mengisi 100% dari kolomnya
+                                // maxWidth: '300px' 
                             }}>
                                 {goalList.map((goal, index) => (
                                     <li key={index} style={{ 

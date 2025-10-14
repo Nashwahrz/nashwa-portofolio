@@ -1,5 +1,5 @@
 import React from 'react';
-import { Briefcase, MapPin, Code, DollarSign, BookOpen, Smartphone, Shield } from 'lucide-react'; 
+import { Briefcase, MapPin, Code, DollarSign, BookOpen, Smartphone, Shield } from 'lucide-react'; // Menggunakan ikon yang sesuai
 
 const experienceList = [
     {
@@ -80,6 +80,7 @@ function Experience() {
     const cardBg = '#1e293b';
 
     const getIconColor = (index) => {
+        
         const colors = [primaryColor, accentColor, '#FFD700', '#FF7F50'];
         return colors[index % colors.length];
     };
@@ -88,9 +89,7 @@ function Experience() {
         <section 
             id="experience" 
             style={{ 
-                // PERBAIKAN: Padding vertikal responsif, Padding horizontal dihilangkan
-                padding: 'clamp(60px, 10vh, 100px) 0', 
-                
+                padding: '100px 20px',
                 backgroundColor: darkBg,
                 textAlign: 'center',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
@@ -100,7 +99,7 @@ function Experience() {
         >
             <div style={{ maxWidth: '1000px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
                 
-                {/* Header (Font size sudah menggunakan clamp) */}
+                {/* Header */}
                 <h2 style={{
                     fontSize: 'clamp(2em, 8vw, 2.8em)',
                     fontWeight: '800',
@@ -123,7 +122,7 @@ function Experience() {
                 {/* Timeline/List Experience */}
                 <div style={{ textAlign: 'left' }}>
                     {experienceList.map((exp, index) => {
-                        const IconComponent = exp.icon || Briefcase; 
+                        const IconComponent = exp.icon || Briefcase; // Default icon
                         const iconColor = getIconColor(index);
 
                         return (
@@ -137,21 +136,17 @@ function Experience() {
                                     paddingBottom: index < experienceList.length - 1 ? '40px' : '0',
                                     borderLeft: index < experienceList.length - 1 ? `2px solid ${cardBg}` : 'none',
                                     position: 'relative',
-                                    // Memastikan garis vertikal tetap ada di layar kecil
-                                    marginLeft: '15px' // Memberi ruang di kiri agar garis terlihat
                                 }}
                             >
                                 {/* Dot / Icon Indicator */}
                                 <div style={{
                                     position: 'sticky',
-                                    // PERBAIKAN: Mengurangi top sticky di HP
-                                    top: '70px', 
+                                    top: '100px', 
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
                                     marginRight: '10px',
                                     zIndex: 10,
-                                    transform: 'translateX(-17px)', // Menarik ikon agar sejajar dengan garis
                                 }}>
                                     <div 
                                         style={{
@@ -172,7 +167,7 @@ function Experience() {
                                     </div>
                                 </div>
 
-                                {/* Content Card (Dibuat responsif) */}
+                                {/* Content Card */}
                                 <div 
                                     style={{
                                         flex: 1,
@@ -184,23 +179,21 @@ function Experience() {
                                         transform: hoveredIndex === index ? 'translateY(-5px)' : 'translateY(0)',
                                         transition: 'all 0.3s ease',
                                         marginTop: '10px',
-                                        width: '100%',
-                                        minWidth: '0' // Mencegah overflow horizontal
+                                        width: '100%'
                                     }}
                                     onMouseEnter={() => setHoveredIndex(index)}
                                     onMouseLeave={() => setHoveredIndex(null)}
                                 >
-                                    <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>
-                                        {/* Tahun diletakkan di atas judul di HP */}
-                                        <span style={{ color: primaryColor, fontWeight: '600', fontSize: '0.85em', marginBottom: '5px' }}>
-                                            {exp.year}
-                                        </span>
-                                        <h3 style={{ margin: 0, color: lightText, fontSize: 'clamp(1.2em, 4vw, 1.4em)', fontWeight: '700' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                                        <h3 style={{ margin: 0, color: lightText, fontSize: '1.4em', fontWeight: '700' }}>
                                             {exp.title}
                                         </h3>
+                                        <span style={{ color: primaryColor, fontWeight: '600', fontSize: '0.9em' }}>
+                                            {exp.year}
+                                        </span>
                                     </div>
                                     
-                                    <p style={{ color: accentColor, margin: '5px 0 10px 0', fontWeight: '500', fontSize: '0.9em' }}>
+                                    <p style={{ color: accentColor, margin: '5px 0 10px 0', fontWeight: '500' }}>
                                         {exp.role}
                                     </p>
                                     

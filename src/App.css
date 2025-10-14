@@ -1,32 +1,8 @@
 #root {
-  /* Hapus max-width dan set padding default (mobile-first) */
+  max-width: 1280px;
   margin: 0 auto;
-  
-  /* Padding yang lebih kecil untuk HP, memberikan ruang di pinggir */
-  padding: 0 16px; 
-  
-  /* Teks rata tengah di root */
+  padding: 2rem;
   text-align: center;
-}
-
-/* -------------------------------------- */
-/* Media Query untuk Desktop/Layar Lebar */
-/* -------------------------------------- */
-@media (min-width: 1024px) {
-  #root {
-    /* Tetapkan max-width dan padding besar kembali */
-    max-width: 1280px;
-    padding: 2rem; 
-  }
-}
-
-/* -------------------------------------- */
-/* Gaya Proyek Default (dari Vite) */
-/* -------------------------------------- */
-
-/* Pastikan semua elemen HTML standar memiliki border-box */
-*, *::before, *::after {
-    box-sizing: border-box;
 }
 
 .logo {
