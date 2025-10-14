@@ -23,7 +23,7 @@ function App() {
         
         <>
             
-            {/* <Header />  */}
+            
             
             <main>
                 <Hero /> 
