@@ -1,6 +1,10 @@
-import React from 'react';
-import { ArrowRight, Code2, Sparkles, Smartphone } from 'lucide-react';
+// src/components/Hero.jsx
 
+import React from 'react';
+
+import { ArrowRight, Code2, Sparkles, Smartphone } from 'lucide-react'; 
+
+// --- DEFINISI GAYA DAN DATA ---
 const useHeroStyles = (isPhotoHovered, isButtonHovered, isMobile) => {
     const darkBg = '#0f172a';
     const primaryColor = '#0ea5e9';
@@ -13,6 +17,7 @@ const useHeroStyles = (isPhotoHovered, isButtonHovered, isMobile) => {
         alignItems: 'center',
         justifyContent: 'center',
         gap: '10px',
+        margin: '0 auto', 
         padding: isMobile ? '12px 28px' : '16px 40px',
         fontSize: isMobile ? '0.95em' : '1.1em',
         fontWeight: '700',
@@ -76,10 +81,12 @@ function Hero() {
         <section 
             style={{
                 display: 'flex',
-                alignItems: 'center',
+                // PERBAIKAN: Menghapus alignItems: 'center' agar konten mulai dari atas
+                // alignItems: 'center', 
                 justifyContent: 'center',
                 minHeight: '100vh', 
-                padding: isMobile ? '40px 16px' : '60px 20px',
+                // Padding vertikal responsif, Padding horizontal dihilangkan
+                padding: isMobile ? '40px 0' : '60px 0',
                 backgroundColor: darkBg,
                 color: lightText,
                 overflow: 'hidden',
@@ -124,7 +131,9 @@ function Hero() {
                 margin: '0 auto', 
                 textAlign: 'center',
                 width: '100%',
-                padding: '0 clamp(0px, 2vw, 20px)'
+                padding: '0 clamp(0px, 2vw, 20px)', // Padding horizontal kecil
+                // PERBAIKAN: Tambahkan padding top yang cukup besar agar konten tidak menempel di atas
+                paddingTop: 'clamp(50px, 10vh, 100px)' 
             }}>
                 
                 {/* Badge Atas */}
