@@ -1,17 +1,17 @@
 // src/App.jsx
 
-
+import React from 'react';
+// Import komponen
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
+import Experience from './components/Experience';
 // import Footer from './components/Footer';
 
-
 import { MessageCircleMore } from 'lucide-react';
-import Experience from './components/Experience';
 
 function App() {
     
@@ -24,14 +24,12 @@ function App() {
     const darkBg = '#0f172a'; 
 
     return (
-     
-        <>
         
+        <>
+            
             {/* <Header />  */}
             
             <main>
-                {/* Bagian utama (Main Content) */}
-                
                 <Hero /> 
                 <About />
                 <Skills />
@@ -40,24 +38,29 @@ function App() {
                 <Contact />
             </main>
 
-            {/* FLOATING WHATSAPP BUTTON */}
+            {/* FLOATING WHATSAPP BUTTON - Dibuat responsif menggunakan unit relatif */}
             <a 
                 href={whatsappLink} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 style={{
                     position: 'fixed', 
-                    bottom: '30px', 
-                    right: '30px', 
+                    // Menggunakan unit REM untuk posisi
+                    bottom: '1.5rem', // 24px (sedikit lebih kecil dari 30px statis)
+                    right: '1.5rem', // 24px
+                    
                     backgroundColor: whatsappColor,
                     borderRadius: '50%',
-                    width: '60px',
-                    height: '60px',
+                    
+                    // MENGGUNAKAN CLAMP/VW UNTUK UKURAN AGAR PROPORSIONAL
+                    width: 'clamp(45px, 12vw, 60px)', // Min 45px, Max 60px
+                    height: 'clamp(45px, 12vw, 60px)',
+                    
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     boxShadow: '0 8px 15px rgba(37, 211, 102, 0.6)',
-                    zIndex: 999, // Pastikan di atas elemen lain
+                    zIndex: 999,
                     transition: 'transform 0.3s ease, background-color 0.3s ease',
                 }}
                 // Efek hover untuk feedback visual
@@ -70,8 +73,8 @@ function App() {
                     e.currentTarget.style.backgroundColor = whatsappColor;
                 }}
             >
-          
-                <MessageCircleMore size={32} color={darkBg} strokeWidth={2} /> 
+                {/* Ukuran ikon disesuaikan menggunakan VW */}
+                <MessageCircleMore size={'clamp(24px, 8vw, 32px)'} color={darkBg} strokeWidth={2} /> 
             </a>
 
             {/*      

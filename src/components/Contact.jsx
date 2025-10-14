@@ -23,8 +23,6 @@ function Contact() {
     const githubUrl = "https://github.com/Nashwahrz/"; 
     const whatsappNumber = "6282383522629"; 
     const instagramHandle = "nsshw.z"; 
-    
-    // Asumsi: File CV ada di folder public/
     const cvFilePath = "/cv_nashwa.pdf"; 
 
     // Fungsi Reusable untuk Hover Effect
@@ -45,13 +43,15 @@ function Contact() {
     const githubHandlers = createHoverHandlers(accentColor);
     const whatsappHandlers = createHoverHandlers(whatsappColor);
     const instagramHandlers = createHoverHandlers(instagramColor);
-    const cvHandlers = createHoverHandlers(cvColor); // Handler baru untuk CV
+    const cvHandlers = createHoverHandlers(cvColor); 
 
     return (
         <section 
             id="contact"
             style={{ 
-                padding: '100px 20px',
+                // PERBAIKAN: Padding vertikal 100px, Padding horizontal DIHILANGKAN (menjadi 0)
+                padding: '100px 0', 
+                
                 backgroundColor: darkBg,
                 minHeight: '80vh', 
                 display: 'flex',
@@ -86,7 +86,7 @@ function Contact() {
 
             <div style={{ maxWidth: '700px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1, textAlign: 'center' }}>
                 
-                {/* Header */}
+                {/* Header (Font size menggunakan clamp) */}
                 <h2 style={{
                     fontSize: 'clamp(2em, 8vw, 2.8em)',
                     fontWeight: '800',
@@ -109,40 +109,42 @@ function Contact() {
                     Anda dapat menghubungi saya dengan cepat melalui tautan berikut:
                 </p>
 
-                {/* Contact Info Grid */}
+                {/* Contact Info Grid - Dibuat agar fleksibel di layar sempit */}
                 <div style={{ 
                     display: 'grid',
-                    // Grid disesuaikan untuk memuat 5 item (minimal 2 kolom)
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
-                    gap: '20px',
-                    maxWidth: '850px', // Lebar diperluas agar 5 kartu muat lebih baik
+                    // Gunakan minmax yang lebih rendah agar di HP bisa 2 kolom dengan nyaman
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
+                    gap: '15px', // Mengurangi gap
+                    maxWidth: '850px', 
                     margin: '0 auto',
                     marginBottom: '50px',
                 }}>
                     
-                    {/* 1. Unduh CV (BARU) */}
+                    {/* 1. Unduh CV */}
                     <a 
                         href={cvFilePath}
-                        download // Atribut download akan memaksa browser untuk mengunduh
+                        download
                         style={{
                             display: 'flex',
                             alignItems: 'center',
                             gap: '15px',
-                            padding: '20px',
+                            padding: '16px 12px', // Padding sedikit dikurangi
                             backgroundColor: cardBg,
-                            border: `2px solid rgba(255, 215, 0, 0.2)`, // Border Kuning transparan
+                            border: `2px solid rgba(255, 215, 0, 0.2)`, 
                             borderRadius: '12px',
                             textDecoration: 'none',
                             transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                             cursor: 'pointer',
+                            flexDirection: 'column', // Diubah menjadi kolom untuk menghemat ruang horizontal di grid
+                            justifyContent: 'center'
                         }}
                         {...cvHandlers}
                     >
-                        <Download size={28} color={cvColor} />
-                        <div style={{ textAlign: 'left' }}>
-                            <p style={{ margin: '0', color: mutedText, fontSize: '0.9em' }}>Portofolio Dokumen</p>
-                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: '1.05em' }}>
-                                Unduh CV Saya
+                        <Download size={24} color={cvColor} />
+                        <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                            <p style={{ margin: '0', color: mutedText, fontSize: '0.8em' }}>Dokumen</p>
+                            <p style={{ margin: '3px 0 0 0', color: lightText, fontWeight: '600', fontSize: '0.9em' }}>
+                                Unduh CV
                             </p>
                         </div>
                     </a>
@@ -154,21 +156,24 @@ function Contact() {
                             display: 'flex',
                             alignItems: 'center',
                             gap: '15px',
-                            padding: '20px',
+                            padding: '16px 12px',
                             backgroundColor: cardBg,
                             border: `2px solid rgba(14, 165, 233, 0.2)`,
                             borderRadius: '12px',
                             textDecoration: 'none',
                             transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                             cursor: 'pointer',
+                            flexDirection: 'column', 
+                            justifyContent: 'center'
                         }}
                         {...emailHandlers}
                     >
-                        <Mail size={28} color={primaryColor} />
-                        <div style={{ textAlign: 'left' }}>
-                            <p style={{ margin: '0', color: mutedText, fontSize: '0.9em' }}>Email</p>
-                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: '1.05em' }}>
-                                {emailAddress}
+                        <Mail size={24} color={primaryColor} />
+                        <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                            <p style={{ margin: '0', color: mutedText, fontSize: '0.8em' }}>Email</p>
+                            {/* Menggunakan slice agar email panjang tidak menyebabkan overflow di HP */}
+                            <p style={{ margin: '3px 0 0 0', color: lightText, fontWeight: '600', fontSize: '0.9em', wordBreak: 'break-all' }}>
+                                {emailAddress.split('@')[0]}...
                             </p>
                         </div>
                     </a>
@@ -182,21 +187,23 @@ function Contact() {
                             display: 'flex',
                             alignItems: 'center',
                             gap: '15px',
-                            padding: '20px',
+                            padding: '16px 12px',
                             backgroundColor: cardBg,
                             border: `2px solid rgba(6, 182, 212, 0.2)`,
                             borderRadius: '12px',
                             textDecoration: 'none',
                             transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            cursor: 'pointer'
+                            cursor: 'pointer',
+                            flexDirection: 'column', 
+                            justifyContent: 'center'
                         }}
                         {...githubHandlers}
                     >
-                        <Github size={28} color={accentColor} />
-                        <div style={{ textAlign: 'left' }}>
-                            <p style={{ margin: '0', color: mutedText, fontSize: '0.9em' }}>GitHub</p>
-                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: '1.05em' }}>
-                                {githubUrl.replace('https://', '')}
+                        <Github size={24} color={accentColor} />
+                        <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                            <p style={{ margin: '0', color: mutedText, fontSize: '0.8em' }}>GitHub</p>
+                            <p style={{ margin: '3px 0 0 0', color: lightText, fontWeight: '600', fontSize: '0.9em' }}>
+                                {githubUrl.replace('https://github.com/', '')}
                             </p>
                         </div>
                     </a>
@@ -210,20 +217,22 @@ function Contact() {
                             display: 'flex',
                             alignItems: 'center',
                             gap: '15px',
-                            padding: '20px',
+                            padding: '16px 12px',
                             backgroundColor: cardBg,
                             border: `2px solid rgba(37, 211, 102, 0.2)`,
                             borderRadius: '12px',
                             textDecoration: 'none',
                             transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            cursor: 'pointer'
+                            cursor: 'pointer',
+                            flexDirection: 'column', 
+                            justifyContent: 'center'
                         }}
                         {...whatsappHandlers}
                     >
-                        <MessageCircleMore size={28} color={whatsappColor} />
-                        <div style={{ textAlign: 'left' }}>
-                            <p style={{ margin: '0', color: mutedText, fontSize: '0.9em' }}>WhatsApp</p>
-                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: '1.05em' }}>
+                        <MessageCircleMore size={24} color={whatsappColor} />
+                        <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                            <p style={{ margin: '0', color: mutedText, fontSize: '0.8em' }}>WhatsApp</p>
+                            <p style={{ margin: '3px 0 0 0', color: lightText, fontWeight: '600', fontSize: '0.9em' }}>
                                 +{whatsappNumber}
                             </p>
                         </div>
@@ -238,20 +247,22 @@ function Contact() {
                             display: 'flex',
                             alignItems: 'center',
                             gap: '15px',
-                            padding: '20px',
+                            padding: '16px 12px',
                             backgroundColor: cardBg,
                             border: `2px solid rgba(225, 48, 108, 0.2)`,
                             borderRadius: '12px',
                             textDecoration: 'none',
                             transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            cursor: 'pointer'
+                            cursor: 'pointer',
+                            flexDirection: 'column', 
+                            justifyContent: 'center'
                         }}
                         {...instagramHandlers}
                     >
-                        <Instagram size={28} color={instagramColor} />
-                        <div style={{ textAlign: 'left' }}>
-                            <p style={{ margin: '0', color: mutedText, fontSize: '0.9em' }}>Instagram</p>
-                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: '1.05em' }}>
+                        <Instagram size={24} color={instagramColor} />
+                        <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                            <p style={{ margin: '0', color: mutedText, fontSize: '0.8em' }}>Instagram</p>
+                            <p style={{ margin: '3px 0 0 0', color: lightText, fontWeight: '600', fontSize: '0.9em' }}>
                                 @{instagramHandle}
                             </p>
                         </div>

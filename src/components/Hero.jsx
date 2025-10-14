@@ -42,8 +42,8 @@ const useHeroStyles = (isPhotoHovered, isButtonHovered) => {
     // Gaya untuk Foto Profil
     const photoContainerStyle = {
         position: 'relative',
-        width: '180px', // Dikecilkan untuk HP
-        height: '180px', // Dikecilkan untuk HP
+        width: '180px', 
+        height: '180px', 
         borderRadius: '50%',
         boxShadow: isPhotoHovered 
             ? `0 0 0 8px ${primaryColor}` 
@@ -78,7 +78,8 @@ function Hero() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 minHeight: '100vh', 
-                padding: '60px 20px',
+                // PERBAIKAN: Menghilangkan padding horizontal yang statis (20px)
+                padding: '60px 0', 
                 backgroundColor: darkBg,
                 color: lightText,
                 overflow: 'hidden',
@@ -88,6 +89,7 @@ function Hero() {
         >
             
             <div style={{ 
+                // Kontainer utama ini bertanggung jawab untuk mengatur lebar konten
                 maxWidth: '900px', 
                 position: 'relative', 
                 zIndex: 1, 
@@ -148,7 +150,7 @@ function Hero() {
 
                 {/* --- JUDUL UTAMA --- */}
                 <h1 style={{
-                    fontSize: 'clamp(3em, 10vw, 4.5em)', // Disesuaikan untuk HP
+                    fontSize: 'clamp(3em, 10vw, 4.5em)', 
                     fontWeight: '800',
                     marginBottom: '10px',
                     lineHeight: '1.1',
@@ -169,7 +171,8 @@ function Hero() {
                     marginBottom: '30px', 
                     flexWrap: 'wrap', 
                     margin: '0 auto',
-                    padding: '0 10px'
+                    // Tambahkan padding kecil jika perlu, atau biarkan 0 agar #root yang mengatur.
+                    padding: '0' 
                 }}>
                     <p style={{ fontSize: 'clamp(1.2em, 3vw, 1.6em)', fontWeight: '600', color: primaryColor, margin: 0 }}>
                         {tagline}

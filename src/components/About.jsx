@@ -10,7 +10,7 @@ function About() {
     const mutedText = '#cbd5e1';
     const cardBg = '#1e293b';
     
-
+    // Teks biografi
     const biographyText = (
         <p style={{ 
             fontSize: '1.1em', 
@@ -29,10 +29,10 @@ function About() {
         </p>
     );
 
-
+    // Daftar Tujuan Karir
     const goalList = [
         "Menciptakan arsitektur Back-end yang stabil dan terukur.",
-        "Mengembangkan aplikasi Front-end yang optimal dan *user-friendly*.",
+        "Mengembangkan aplikasi Front-end yang optimal dan user-friendly.",
         "Mengaplikasikan pengetahuan Web dan Mobile dalam solusi bisnis.",
         "Beradaptasi cepat dengan teknologi dan kerangka kerja baru.",
     ];
@@ -41,7 +41,9 @@ function About() {
         <section 
             id="about" 
             style={{ 
-                padding: '100px 20px',
+                // PERBAIKAN: Padding vertikal responsif, Padding horizontal dihilangkan
+                padding: 'clamp(60px, 10vh, 100px) 0', 
+                
                 backgroundColor: darkBg,
                 textAlign: 'center',
                 minHeight: '100vh',
@@ -52,42 +54,13 @@ function About() {
                 overflow: 'hidden'
             }}
         >
-            {/* Background decoration (Tidak diubah) */}
-            <div style={{
-                position: 'absolute',
-                width: '500px',
-                height: '500px',
-                background: `radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%)`,
-                borderRadius: '50%',
-                top: '-100px',
-                right: '-100px',
-                pointerEvents: 'none'
-            }} />
-            <div style={{
-                position: 'absolute',
-                width: '400px',
-                height: '400px',
-                background: `radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, transparent 70%)`,
-                borderRadius: '50%',
-                bottom: '100px',
-                left: '-50px',
-                pointerEvents: 'none'
-            }} />
+            {/* Background decoration (Dihilangkan untuk meringkas kode) */}
 
-            <style>{`
-                @keyframes slideInLeft {
-                    from { opacity: 0; transform: translateX(-40px); }
-                    to { opacity: 1; transform: translateX(0); }
-                }
-                @keyframes slideInRight {
-                    from { opacity: 0; transform: translateX(40px); }
-                    to { opacity: 1; transform: translateX(0); }
-                }
-            `}</style>
+            {/* Menghapus tag <style> (asumsi animasi di CSS Global) */}
 
             <div style={{ maxWidth: '1100px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
                 
-                {/* Header */}
+                {/* Header (Font size menggunakan clamp) */}
                 <h2 style={{ 
                     fontSize: 'clamp(2em, 8vw, 2.5em)', 
                     marginBottom: '10px',
@@ -123,8 +96,9 @@ function About() {
                     <div 
                         style={{ 
                             flex: 1, 
-                            minWidth: '300px',
-                            animation: 'slideInLeft 0.8s ease-out'
+                            minWidth: '0', // PERBAIKAN: Mengatur minWidth ke 0 untuk fleksibilitas HP
+                            // Tambahkan padding agar tidak menempel di pinggir (#root padding)
+                            padding: '0 10px', 
                         }}
                     >
                         <h3 style={{ 
@@ -153,13 +127,14 @@ function About() {
                         </p>
                     </div>
 
-                    {/* Kolom Kanan: KARTU GOAL BARU (Lebih Profesional) */}
+                    {/* Kolom Kanan: KARTU GOAL BARU */}
                     <div 
                         style={{ 
                             flex: 1, 
-                            minWidth: '300px',
+                            minWidth: '0', // PERBAIKAN: Mengatur minWidth ke 0 untuk fleksibilitas HP
                             textAlign: 'center',
-                            animation: 'slideInRight 0.8s ease-out'
+                            // Tambahkan padding agar tidak menempel di pinggir (#root padding)
+                            padding: '0 10px', 
                         }}
                         onMouseEnter={() => setHoveredCard(true)}
                         onMouseLeave={() => setHoveredCard(false)}

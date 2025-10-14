@@ -29,7 +29,9 @@ function Skills() {
         <section 
             id="skills"
             style={{ 
-                padding: '100px 20px', // Padding horizontal cukup besar untuk desktop, tetap wajar di HP
+                // PERBAIKAN: Padding vertikal menggunakan CLAMP, Padding horizontal dihilangkan (menjadi 0)
+                padding: 'clamp(60px, 10vh, 100px) 0', 
+                
                 backgroundColor: darkBg,
                 textAlign: 'center',
                 minHeight: '100vh',
@@ -62,8 +64,7 @@ function Skills() {
                 pointerEvents: 'none'
             }} />
 
-            {/* Menghapus tag <style> karena animasi slideUp sebaiknya diletakkan di CSS Global */}
-
+            {/* Kontainer utama menggunakan maxWidth '1100px' */}
             <div style={{ maxWidth: '1100px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
 
                 {/* Header */}
@@ -91,9 +92,9 @@ function Skills() {
                 <div 
                     style={{
                         display: 'grid',
-                        // PERBAIKAN RESPONSIVITAS: Mengurangi nilai minmax agar di HP dapat menampilkan 2-3 kolom
+                        // Sudah responsif, minmax 150px memastikan 2-3 kolom di HP
                         gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
-                        gap: '20px', // Mengurangi gap sedikit agar lebih padat di HP
+                        gap: '20px', 
                         maxWidth: '1100px',
                         margin: '0 auto'
                     }}
@@ -114,7 +115,6 @@ function Skills() {
                                 cursor: 'pointer',
                                 position: 'relative',
                                 overflow: 'hidden',
-                                // Menghilangkan inline animation agar tidak berlebihan di setiap skill card
                             }}
                             onMouseEnter={() => setHoveredIndex(index)}
                             onMouseLeave={() => setHoveredIndex(null)}
@@ -135,9 +135,8 @@ function Skills() {
                             {/* Content */}
                             <div style={{ position: 'relative', zIndex: 1 }}>
 
-                                {/* Ikon Keterampilan - Diatur agar warna ikon ditarik dari skill.color */}
+                                {/* Ikon Keterampilan */}
                                 <span style={{ display: 'block', marginBottom: '10px', color: skill.color }}>
-                                    {/* CLONING ICON dengan mengubah properti color-nya secara inline */}
                                     {React.cloneElement(skill.icon, { color: skill.color, size: 40 })}
                                 </span>
 

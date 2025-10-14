@@ -114,7 +114,7 @@ const projectList = [
             ]
         }
     },
-     {
+    {
         title: "Aplikasi Catatan",
         description: "Assignment for Mobile Programming Course.",
         tech: ["Flutter", "Lumen", "API", "Mysql"],
@@ -165,6 +165,7 @@ function Projects() {
     const accentColor = '#06b6d4'; 
     const lightText = '#f1f5f9'; 
     const mutedText = '#cbd5e1';
+    const typeBg = '#475569'; // Menambahkan typeBg untuk tag type
 
     const closeModal = () => setModalProject(null);
     const openModal = (project) => setModalProject(project);
@@ -183,12 +184,12 @@ function Projects() {
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    backgroundColor: 'rgba(0, 0, 0, 0.85)', 
+                    backgroundColor: 'rgba(0, 0, 0, 0.95)', // Gelap total untuk fokus
                     zIndex: 1000,
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    padding: '20px',
+                    padding: '10px 10px', // Padding kecil di luar
                     overflowY: 'auto'
                 }}
                 onClick={onClose} 
@@ -198,36 +199,38 @@ function Projects() {
                         backgroundColor: cardBg,
                         color: lightText,
                         borderRadius: '16px',
-                        maxWidth: '800px',
-                        width: '100%',
-                        maxHeight: '90vh', 
+                        maxWidth: '90%', // Menggunakan persentase agar responsif
+                        width: '800px', // Maksimal 800px
+                        maxHeight: '95vh', // Menggunakan vh
                         overflowY: 'auto', 
-                        padding: '40px',
+                        padding: 'clamp(20px, 5vw, 40px)', // Padding responsif di dalam modal
                         position: 'relative',
                         boxShadow: `0 25px 80px rgba(6, 182, 212, 0.3), 0 0 40px ${accentColor}40`,
                         border: `2px solid ${accentColor}40`
                     }}
                     onClick={(e) => e.stopPropagation()} 
                 >
+                    {/* Tombol Tutup */}
                     <button 
                         onClick={onClose} 
                         style={{
                             position: 'absolute',
-                            top: '20px',
-                            right: '20px',
+                            top: '15px', // Dikecilkan padding
+                            right: '15px', // Dikecilkan padding
                             backgroundColor: 'transparent',
                             color: mutedText,
                             border: `2px solid ${mutedText}`,
-                            fontSize: '1.5em',
+                            fontSize: '1.2em', // Dikecilkan font size
                             cursor: 'pointer',
-                            width: '36px',
-                            height: '36px',
+                            width: '32px', // Dikecilkan size
+                            height: '32px', // Dikecilkan size
                             borderRadius: '50%',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             transition: 'all 0.3s ease',
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            zIndex: 10
                         }}
                         onMouseEnter={(e) => {
                             e.currentTarget.style.backgroundColor = primaryColor;
@@ -243,21 +246,23 @@ function Projects() {
                         ×
                     </button>
 
-                    <h2 style={{ color: accentColor, marginBottom: '10px', fontSize: '1.8em', fontWeight: '800' }}>
+                    <h2 style={{ color: accentColor, marginBottom: '10px', fontSize: 'clamp(1.4em, 5vw, 1.8em)', fontWeight: '800' }}>
                         {project.title}
                     </h2>
                     <p style={{ color: mutedText, marginBottom: '25px', borderBottom: `1px solid ${accentColor}40`, paddingBottom: '15px' }}>
                         {project.description}
                     </p>
 
+                    {/* FOTO-FOTO GALERI (Dibuat lebih responsif) */}
                     <h3 style={{ color: primaryColor, marginTop: '30px', marginBottom: '18px', fontSize: '1.2em', fontWeight: '700' }}>
                         Galeri Proyek
                     </h3>
                     <div 
                         style={{
                             display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                            gap: '18px',
+                            // Disesuaikan agar bisa menampilkan 2 kolom di HP
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', 
+                            gap: '12px', // Mengurangi gap
                             marginBottom: '30px',
                         }}
                     >
@@ -269,7 +274,8 @@ function Projects() {
                                 boxShadow: `0 8px 20px rgba(6, 182, 212, 0.15)`,
                                 border: `1px solid ${accentColor}20`,
                                 transition: 'all 0.3s ease',
-                                cursor: 'pointer'
+                                cursor: 'pointer',
+                                height: 'auto', // Tinggi disesuaikan gambar
                             }}
                             onMouseEnter={(e) => {
                                 e.currentTarget.style.transform = 'translateY(-4px)';
@@ -286,17 +292,17 @@ function Projects() {
                                         width: '100%', 
                                         height: 'auto',
                                         maxWidth: '100%',
-                                        maxHeight: '280px',
+                                        maxHeight: '200px', // Batas maksimum gambar
                                         objectFit: 'contain', 
                                         display: 'block',
-                                        padding: '12px',
+                                        padding: '10px', // Padding lebih kecil
                                         margin: '0 auto'
                                     }}
                                 />
                                 <p style={{ 
-                                    fontSize: '0.8em', 
+                                    fontSize: '0.75em', // Font lebih kecil
                                     color: mutedText, 
-                                    padding: '10px', 
+                                    padding: '8px', // Padding lebih kecil
                                     textAlign: 'center',
                                     width: '100%',
                                     backgroundColor: `${accentColor}10`,
@@ -314,9 +320,9 @@ function Projects() {
                     <ul style={{ listStyleType: 'none', padding: 0, textAlign: 'left' }}>
                         {project.details.features.map((feature, i) => (
                             <li key={i} style={{ 
-                                marginBottom: '12px', 
+                                marginBottom: '10px', // Margin lebih kecil
                                 backgroundColor: `${primaryColor}10`, 
-                                padding: '14px 16px', 
+                                padding: '12px 14px', // Padding lebih kecil
                                 borderRadius: '8px',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -333,8 +339,8 @@ function Projects() {
                                 e.currentTarget.style.borderColor = `${primaryColor}20`;
                                 e.currentTarget.style.transform = 'translateX(0)';
                             }}>
-                                <span style={{ color: accentColor, marginRight: '12px', fontWeight: 'bold', fontSize: '1.1em' }}>✓</span> 
-                                <span style={{ color: lightText, fontSize: '0.95em' }}>{feature}</span>
+                                <span style={{ color: accentColor, marginRight: '10px', fontWeight: 'bold', fontSize: '1.1em' }}>✓</span> 
+                                <span style={{ color: lightText, fontSize: '0.9em' }}>{feature}</span> {/* Font lebih kecil */}
                             </li>
                         ))}
                     </ul>
@@ -383,7 +389,9 @@ function Projects() {
         <section 
             id="projects" 
             style={{ 
-                padding: '100px 20px',
+                // PERBAIKAN: Padding vertikal responsif, Padding horizontal dihilangkan
+                padding: 'clamp(60px, 10vh, 100px) 0', 
+                
                 backgroundColor: darkBg,
                 textAlign: 'center',
                 color: lightText,
@@ -396,7 +404,7 @@ function Projects() {
                 transition: 'background-color 0.5s ease'
             }}
         >
-            {/* Background decoration */}
+            {/* Background decoration (dibiarkan) */}
             <div style={{
                 position: 'absolute',
                 width: '400px',
@@ -418,18 +426,7 @@ function Projects() {
                 pointerEvents: 'none'
             }} />
 
-            <style>{`
-                @keyframes slideUp {
-                    from {
-                        opacity: 0;
-                        transform: translateY(40px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-            `}</style>
+            {/* Menghapus tag <style> */}
 
             <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
                 <h2 style={{ 
@@ -455,15 +452,17 @@ function Projects() {
                 <div 
                     style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
-                        gap: '30px',
+                        // PERBAIKAN: Mengurangi minmax agar 2 kolom muat lebih nyaman di HP
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
+                        gap: '20px', // Mengurangi gap
                         maxWidth: '1200px',
                         margin: '0 auto'
                     }}
                 >
                     {projectList.map((project, index) => {
                         const isCurrentHovered = index === hoveredIndex;
-
+                        const typeColor = project.type === "Mobile" ? primaryColor : project.type === "Web" ? accentColor : lightText;
+                        
                         return (
                             <div 
                                 key={index}
@@ -484,7 +483,6 @@ function Projects() {
                                     cursor: 'pointer',
                                     position: 'relative',
                                     overflow: 'hidden',
-                                    animation: `slideUp 0.6s ease-out ${index * 0.08}s backwards`
                                 }}
                             >
                                 {/* Background glow effect */}
@@ -537,20 +535,20 @@ function Projects() {
                                         {project.description}
                                     </p>
                                     
+                                    {/* Tag Teknologi dan Tipe Proyek */}
                                     <div style={{ margin: '22px 0 18px 0', display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
                                         {project.type && (
                                             <span 
                                                 style={{ 
                                                     display: 'inline-block', 
-                                                    backgroundColor: `${primaryColor}20`,
-                                                    border: `1.5px solid ${primaryColor}`,
-                                                    color: primaryColor,
+                                                    backgroundColor: `${typeColor}20`,
+                                                    border: `1.5px solid ${typeColor}`,
+                                                    color: typeColor,
                                                     padding: '6px 12px', 
                                                     borderRadius: '20px', 
                                                     fontSize: '0.8em',
                                                     fontWeight: '700',
                                                     textTransform: 'uppercase',
-                                                    transition: 'all 0.3s ease',
                                                     letterSpacing: '0.5px'
                                                 }}
                                             >
@@ -594,6 +592,7 @@ function Projects() {
                                         )}
                                     </div>
                                     
+                                    {/* Link Detail */}
                                     <p style={{
                                         marginTop: '20px',
                                         color: primaryColor,
