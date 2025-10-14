@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Pastikan Anda sudah menginstal react-icons: npm install react-icons
 import { DiHtml5, DiCss3, DiJavascript1, DiReact, DiGit, DiBootstrap, DiLaravel, DiAndroid, DiApple } from 'react-icons/di';
 
 const skillList = [
@@ -8,12 +9,8 @@ const skillList = [
     { name: "JavaScript (ES6+)", color: "#F7DF1E", icon: <DiJavascript1 size={40} /> },
     { name: "React.js", color: "#61DAFB", icon: <DiReact size={40} /> },
     { name: "Git & GitHub", color: "#181717", icon: <DiGit size={40} /> },
-
     { name: "Bootstrap", color: "#7952B3", icon: <DiBootstrap size={40} /> }, 
-
     { name: "Laravel", color: "#FF2D20", icon: <DiLaravel size={40} /> },
-
-    
     { name: "Kotlin", color: "#7F52FF", icon: <DiAndroid size={40} /> },
     { name: "Flutter", color: "#02569B", icon: <DiApple size={40} /> }, 
 ];
@@ -32,7 +29,7 @@ function Skills() {
         <section 
             id="skills"
             style={{ 
-                padding: '100px 20px',
+                padding: '100px 20px', // Padding horizontal cukup besar untuk desktop, tetap wajar di HP
                 backgroundColor: darkBg,
                 textAlign: 'center',
                 minHeight: '100vh',
@@ -43,7 +40,7 @@ function Skills() {
                 overflow: 'hidden'
             }}
         >
-            {/* Background decoration */}
+            {/* Background decoration (Tidak diubah) */}
             <div style={{
                 position: 'absolute',
                 width: '400px',
@@ -65,18 +62,7 @@ function Skills() {
                 pointerEvents: 'none'
             }} />
 
-            <style>{`
-                @keyframes slideUp {
-                    from {
-                        opacity: 0;
-                        transform: translateY(40px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-            `}</style>
+            {/* Menghapus tag <style> karena animasi slideUp sebaiknya diletakkan di CSS Global */}
 
             <div style={{ maxWidth: '1100px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
 
@@ -105,8 +91,9 @@ function Skills() {
                 <div 
                     style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-                        gap: '25px',
+                        // PERBAIKAN RESPONSIVITAS: Mengurangi nilai minmax agar di HP dapat menampilkan 2-3 kolom
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
+                        gap: '20px', // Mengurangi gap sedikit agar lebih padat di HP
                         maxWidth: '1100px',
                         margin: '0 auto'
                     }}
@@ -127,7 +114,7 @@ function Skills() {
                                 cursor: 'pointer',
                                 position: 'relative',
                                 overflow: 'hidden',
-                                animation: `slideUp 0.6s ease-out ${index * 0.08}s backwards`
+                                // Menghilangkan inline animation agar tidak berlebihan di setiap skill card
                             }}
                             onMouseEnter={() => setHoveredIndex(index)}
                             onMouseLeave={() => setHoveredIndex(null)}
@@ -148,9 +135,10 @@ function Skills() {
                             {/* Content */}
                             <div style={{ position: 'relative', zIndex: 1 }}>
 
-                               
+                                {/* Ikon Keterampilan - Diatur agar warna ikon ditarik dari skill.color */}
                                 <span style={{ display: 'block', marginBottom: '10px', color: skill.color }}>
-                                    {skill.icon}
+                                    {/* CLONING ICON dengan mengubah properti color-nya secara inline */}
+                                    {React.cloneElement(skill.icon, { color: skill.color, size: 40 })}
                                 </span>
 
                                 {/* Color accent bar */}
