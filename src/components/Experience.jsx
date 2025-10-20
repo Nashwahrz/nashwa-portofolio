@@ -1,7 +1,9 @@
+// src/components/Experience.jsx
 import React from 'react';
-import { Briefcase, MapPin, Code, DollarSign, BookOpen, Smartphone, Shield } from 'lucide-react'; // Menggunakan ikon yang sesuai
+import { Briefcase, MapPin, Code, DollarSign, BookOpen, Smartphone, Shield } from 'lucide-react'; 
 
 const experienceList = [
+    // ... (experienceList unchanged) ...
     {
         title: "Sistem Kepuasan Layanan Akademik (SIKELA)",
         role: "Backend Developer",
@@ -31,7 +33,7 @@ const experienceList = [
         role: "Full-Stack Developer",
         year: "2025",
         tech: ["Laravel", "Bootstrap", "MySQL"],
-        description: "Proyek akhir mata kuliah Web Programming. Mengembangkan aplikasi web pemesanan gedung dengan fitur pengajuan *booking*, pelacakan status, dan fitur persetujuan admin dengan kontrol akses berbasis peran.",
+        description: "Proyek akhir mata kuliah Web Programming. Mengembangkan aplikasi web pemesanan gedung dengan fitur pengajuan booking, pelacakan status, dan fitur persetujuan admin dengan kontrol akses berbasis peran.",
         icon: BookOpen
     },
     {
@@ -39,7 +41,7 @@ const experienceList = [
         role: "Mobile Developer",
         year: "2024",
         tech: ["Flutter", "SQLite"],
-        description: "Membuat aplikasi *notes* mobile sederhana dengan fungsionalitas penuh CRUD (Create, Read, Update, Delete). Data disimpan secara lokal di perangkat menggunakan basis data SQLite.",
+        description: "Membuat aplikasi notes mobile sederhana dengan fungsionalitas penuh CRUD (Create, Read, Update, Delete). Data disimpan secara lokal di perangkat menggunakan basis data SQLite.",
         icon: Smartphone
     },
     {
@@ -47,7 +49,7 @@ const experienceList = [
         role: "Mobile Developer",
         year: "2025",
         tech: ["Flutter", "MySQL", "API"],
-        description: "Mengembangkan aplikasi mobile berbasis Flutter dengan fungsionalitas CRUD lengkap. Mengintegrasikan Google Maps untuk menampilkan lokasi kampus dan MySQL sebagai penyimpanan data *online* via API.",
+        description: "Mengembangkan aplikasi mobile berbasis Flutter dengan fungsionalitas CRUD lengkap. Mengintegrasikan Google Maps untuk menampilkan lokasi kampus dan MySQL sebagai penyimpanan data online via API.",
         icon: Smartphone
     },
     {
@@ -68,8 +70,17 @@ const experienceList = [
     },
 ];
 
+
 function Experience() {
     const [hoveredIndex, setHoveredIndex] = React.useState(null);
+    // FIX 1: Tambahkan state dan logic untuk mendeteksi mobile
+    const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+
+    React.useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // DEFINE WARNA TEMA
     const darkBg = '#0f172a';
@@ -89,7 +100,8 @@ function Experience() {
         <section 
             id="experience" 
             style={{ 
-                padding: '100px 20px',
+                // FIX 2: Sesuaikan padding section untuk mobile
+                padding: isMobile ? '60px 16px' : '100px 20px',
                 backgroundColor: darkBg,
                 textAlign: 'center',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
@@ -97,11 +109,19 @@ function Experience() {
                 overflow: 'hidden'
             }}
         >
-            <div style={{ maxWidth: '1000px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
+            <div style={{ 
+                maxWidth: '1000px', 
+                margin: '0 auto', 
+                position: 'relative', 
+                zIndex: 1, 
+                // FIX 3: Tambahkan padding horizontal kecil di mobile
+                padding: isMobile ? '0 10px' : '0' 
+            }}>
                 
                 {/* Header */}
                 <h2 style={{
-                    fontSize: 'clamp(2em, 8vw, 2.8em)',
+                    // FIX: Font size responsif
+                    fontSize: isMobile ? 'clamp(1.8em, 7vw, 2.8em)' : 'clamp(2em, 8vw, 2.8em)',
                     fontWeight: '800',
                     marginBottom: '15px',
                     background: `linear-gradient(135deg, ${lightText}, ${primaryColor})`,
@@ -112,9 +132,10 @@ function Experience() {
                     Pengalaman Kerja & Proyek
                 </h2>
                 <p style={{ 
-                    marginBottom: '60px',
+                    // FIX: Margin dan font size responsif
+                    marginBottom: isMobile ? '40px' : '60px',
                     color: mutedText,
-                    fontSize: '1.1em',
+                    fontSize: isMobile ? '1em' : '1.1em',
                 }}>
                     Peran dan kontribusi utama saya dalam berbagai proyek pengembangan.
                 </p>
@@ -132,16 +153,18 @@ function Experience() {
                                     display: 'flex',
                                     alignItems: 'flex-start',
                                     gap: '20px',
-                                    marginBottom: '40px',
-                                    paddingBottom: index < experienceList.length - 1 ? '40px' : '0',
+                                    // FIX: Margin dan padding responsif
+                                    marginBottom: isMobile ? '30px' : '40px',
+                                    paddingBottom: index < experienceList.length - 1 ? (isMobile ? '30px' : '40px') : '0',
                                     borderLeft: index < experienceList.length - 1 ? `2px solid ${cardBg}` : 'none',
                                     position: 'relative',
                                 }}
                             >
                                 {/* Dot / Icon Indicator */}
                                 <div style={{
-                                    position: 'sticky',
-                                    top: '100px', 
+                                    // FIX 4: Matikan sticky di mobile
+                                    position: isMobile ? 'relative' : 'sticky',
+                                    top: isMobile ? '0' : '100px', 
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
@@ -153,17 +176,19 @@ function Experience() {
                                             backgroundColor: cardBg,
                                             border: `3px solid ${iconColor}`,
                                             borderRadius: '50%',
-                                            padding: '8px',
+                                            // FIX: Padding icon responsif
+                                            padding: isMobile ? '6px' : '8px',
                                             display: 'flex',
                                             justifyContent: 'center',
                                             alignItems: 'center',
                                             transform: hoveredIndex === index ? 'scale(1.1)' : 'scale(1)',
                                             transition: 'transform 0.3s ease',
                                         }}
-                                        onMouseEnter={() => setHoveredIndex(index)}
-                                        onMouseLeave={() => setHoveredIndex(null)}
+                                        onMouseEnter={() => !isMobile && setHoveredIndex(index)}
+                                        onMouseLeave={() => !isMobile && setHoveredIndex(null)}
                                     >
-                                        <IconComponent size={20} color={lightText} />
+                                        {/* FIX: Ukuran icon responsif */}
+                                        <IconComponent size={isMobile ? 18 : 20} color={lightText} />
                                     </div>
                                 </div>
 
@@ -172,32 +197,53 @@ function Experience() {
                                     style={{
                                         flex: 1,
                                         backgroundColor: cardBg,
-                                        padding: '25px',
+                                        // FIX: Padding card responsif
+                                        padding: isMobile ? '20px' : '25px',
                                         borderRadius: '10px',
                                         boxShadow: hoveredIndex === index ? `0 15px 30px ${iconColor}20` : 'none',
                                         border: `1px solid ${hoveredIndex === index ? iconColor : 'transparent'}`,
-                                        transform: hoveredIndex === index ? 'translateY(-5px)' : 'translateY(0)',
+                                        transform: hoveredIndex === index && !isMobile ? 'translateY(-5px)' : 'translateY(0)', // FIX: Matikan transform hover di mobile
                                         transition: 'all 0.3s ease',
-                                        marginTop: '10px',
+                                        marginTop: isMobile ? '0' : '10px',
                                         width: '100%'
                                     }}
-                                    onMouseEnter={() => setHoveredIndex(index)}
-                                    onMouseLeave={() => setHoveredIndex(null)}
+                                    onMouseEnter={() => !isMobile && setHoveredIndex(index)}
+                                    onMouseLeave={() => !isMobile && setHoveredIndex(null)}
                                 >
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                                        <h3 style={{ margin: 0, color: lightText, fontSize: '1.4em', fontWeight: '700' }}>
+                                    <div style={{ 
+                                        display: 'flex', 
+                                        // FIX 5: Layout header card vertikal di mobile
+                                        flexDirection: isMobile ? 'column' : 'row',
+                                        alignItems: isMobile ? 'flex-start' : 'center',
+                                        marginBottom: '10px' 
+                                    }}>
+                                        <h3 style={{ 
+                                            margin: 0, 
+                                            color: lightText, 
+                                            // FIX: Font size responsif
+                                            fontSize: isMobile ? '1.2em' : '1.4em', 
+                                            fontWeight: '700',
+                                            // FIX: Margin bawah di mobile
+                                            marginBottom: isMobile ? '5px' : '0'
+                                        }}>
                                             {exp.title}
                                         </h3>
-                                        <span style={{ color: primaryColor, fontWeight: '600', fontSize: '0.9em' }}>
+                                        <span style={{ 
+                                            color: primaryColor, 
+                                            fontWeight: '600', 
+                                            // FIX: Font size responsif & margin kiri di desktop
+                                            fontSize: isMobile ? '0.85em' : '0.9em',
+                                            marginLeft: isMobile ? '0' : 'auto'
+                                        }}>
                                             {exp.year}
                                         </span>
                                     </div>
                                     
-                                    <p style={{ color: accentColor, margin: '5px 0 10px 0', fontWeight: '500' }}>
+                                    <p style={{ color: accentColor, margin: '5px 0 10px 0', fontWeight: '500', fontSize: isMobile ? '0.9em' : '0.95em' }}>
                                         {exp.role}
                                     </p>
                                     
-                                    <p style={{ color: mutedText, fontSize: '0.95em', lineHeight: '1.6' }}>
+                                    <p style={{ color: mutedText, fontSize: isMobile ? '0.85em' : '0.95em', lineHeight: '1.6' }}>
                                         {exp.description}
                                     </p>
 

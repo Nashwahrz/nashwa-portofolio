@@ -1,3 +1,5 @@
+// src/components/Projects.jsx
+
 import React from 'react';
 
 // Data Proyek (Tidak Berubah)
@@ -158,6 +160,14 @@ const projectList = [
 function Projects() {
     const [hoveredIndex, setHoveredIndex] = React.useState(null);
     const [modalProject, setModalProject] = React.useState(null); 
+    // FIX 1: Tambahkan state dan logic untuk mendeteksi mobile
+    const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+
+    React.useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const darkBg = '#0f172a'; 
     const cardBg = '#1e293b'; 
@@ -188,7 +198,8 @@ function Projects() {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    padding: '20px',
+                    // FIX 2: Padding modal overlay responsif
+                    padding: isMobile ? '16px' : '20px',
                     overflowY: 'auto'
                 }}
                 onClick={onClose} 
@@ -202,7 +213,8 @@ function Projects() {
                         width: '100%',
                         maxHeight: '90vh', 
                         overflowY: 'auto', 
-                        padding: '40px',
+                        // FIX 3: Padding modal content responsif
+                        padding: isMobile ? '24px' : '40px',
                         position: 'relative',
                         boxShadow: `0 25px 80px rgba(6, 182, 212, 0.3), 0 0 40px ${accentColor}40`,
                         border: `2px solid ${accentColor}40`
@@ -213,8 +225,9 @@ function Projects() {
                         onClick={onClose} 
                         style={{
                             position: 'absolute',
-                            top: '20px',
-                            right: '20px',
+                            // FIX: Sesuaikan posisi close button
+                            top: isMobile ? '12px' : '20px',
+                            right: isMobile ? '12px' : '20px',
                             backgroundColor: 'transparent',
                             color: mutedText,
                             border: `2px solid ${mutedText}`,
@@ -243,21 +256,22 @@ function Projects() {
                         ×
                     </button>
 
-                    <h2 style={{ color: accentColor, marginBottom: '10px', fontSize: '1.8em', fontWeight: '800' }}>
+                    <h2 style={{ color: accentColor, marginBottom: '10px', fontSize: isMobile ? '1.4em' : '1.8em', fontWeight: '800' }}>
                         {project.title}
                     </h2>
-                    <p style={{ color: mutedText, marginBottom: '25px', borderBottom: `1px solid ${accentColor}40`, paddingBottom: '15px' }}>
+                    <p style={{ color: mutedText, marginBottom: '25px', borderBottom: `1px solid ${accentColor}40`, paddingBottom: '15px', fontSize: isMobile ? '0.9em' : '1em' }}>
                         {project.description}
                     </p>
 
-                    <h3 style={{ color: primaryColor, marginTop: '30px', marginBottom: '18px', fontSize: '1.2em', fontWeight: '700' }}>
+                    <h3 style={{ color: primaryColor, marginTop: '30px', marginBottom: '18px', fontSize: isMobile ? '1em' : '1.2em', fontWeight: '700' }}>
                         Galeri Proyek
                     </h3>
                     <div 
                         style={{
                             display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                            gap: '18px',
+                            // FIX 4: Sesuaikan grid galeri untuk mobile
+                            gridTemplateColumns: isMobile ? 'repeat(auto-fit, minmax(130px, 1fr))' : 'repeat(auto-fit, minmax(180px, 1fr))',
+                            gap: '12px', // Mengurangi gap di mobile
                             marginBottom: '30px',
                         }}
                     >
@@ -272,12 +286,16 @@ function Projects() {
                                 cursor: 'pointer'
                             }}
                             onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = 'translateY(-4px)';
-                                e.currentTarget.style.boxShadow = `0 12px 30px rgba(6, 182, 212, 0.3)`;
+                                if (!isMobile) {
+                                    e.currentTarget.style.transform = 'translateY(-4px)';
+                                    e.currentTarget.style.boxShadow = `0 12px 30px rgba(6, 182, 212, 0.3)`;
+                                }
                             }}
                             onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = 'translateY(0)';
-                                e.currentTarget.style.boxShadow = `0 8px 20px rgba(6, 182, 212, 0.15)`;
+                                if (!isMobile) {
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = `0 8px 20px rgba(6, 182, 212, 0.15)`;
+                                }
                             }}>
                                 <img 
                                     src={img.src} 
@@ -286,21 +304,26 @@ function Projects() {
                                         width: '100%', 
                                         height: 'auto',
                                         maxWidth: '100%',
-                                        maxHeight: '280px',
+                                        // FIX 5: Tinggi gambar di modal lebih kecil di mobile
+                                        maxHeight: isMobile ? '150px' : '280px',
                                         objectFit: 'contain', 
                                         display: 'block',
-                                        padding: '12px',
+                                        padding: '8px',
                                         margin: '0 auto'
                                     }}
                                 />
                                 <p style={{ 
-                                    fontSize: '0.8em', 
+                                    // FIX 6: Font size deskripsi gambar lebih kecil di mobile
+                                    fontSize: isMobile ? '0.7em' : '0.8em', 
                                     color: mutedText, 
-                                    padding: '10px', 
+                                    padding: '8px', 
                                     textAlign: 'center',
                                     width: '100%',
                                     backgroundColor: `${accentColor}10`,
-                                    margin: 0
+                                    margin: 0,
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
                                 }}>
                                     {img.alt}
                                 </p>
@@ -308,7 +331,7 @@ function Projects() {
                         ))}
                     </div>
 
-                    <h3 style={{ color: primaryColor, marginBottom: '18px', fontSize: '1.2em', fontWeight: '700' }}>
+                    <h3 style={{ color: primaryColor, marginBottom: '18px', fontSize: isMobile ? '1em' : '1.2em', fontWeight: '700' }}>
                         Fitur Utama
                     </h3>
                     <ul style={{ listStyleType: 'none', padding: 0, textAlign: 'left' }}>
@@ -316,25 +339,30 @@ function Projects() {
                             <li key={i} style={{ 
                                 marginBottom: '12px', 
                                 backgroundColor: `${primaryColor}10`, 
-                                padding: '14px 16px', 
+                                padding: '12px 14px', // FIX: Padding disesuaikan
                                 borderRadius: '8px',
                                 display: 'flex',
-                                alignItems: 'center',
+                                alignItems: 'flex-start', // FIX: Menggunakan flex-start agar centang di atas
                                 border: `1px solid ${primaryColor}20`,
-                                transition: 'all 0.3s ease'
+                                transition: 'all 0.3s ease',
+                                fontSize: isMobile ? '0.85em' : '0.95em'
                             }}
                             onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor = `${primaryColor}15`;
-                                e.currentTarget.style.borderColor = `${primaryColor}40`;
-                                e.currentTarget.style.transform = 'translateX(5px)';
+                                if (!isMobile) {
+                                    e.currentTarget.style.backgroundColor = `${primaryColor}15`;
+                                    e.currentTarget.style.borderColor = `${primaryColor}40`;
+                                    e.currentTarget.style.transform = 'translateX(5px)';
+                                }
                             }}
                             onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = `${primaryColor}10`;
-                                e.currentTarget.style.borderColor = `${primaryColor}20`;
-                                e.currentTarget.style.transform = 'translateX(0)';
+                                if (!isMobile) {
+                                    e.currentTarget.style.backgroundColor = `${primaryColor}10`;
+                                    e.currentTarget.style.borderColor = `${primaryColor}20`;
+                                    e.currentTarget.style.transform = 'translateX(0)';
+                                }
                             }}>
-                                <span style={{ color: accentColor, marginRight: '12px', fontWeight: 'bold', fontSize: '1.1em' }}>✓</span> 
-                                <span style={{ color: lightText, fontSize: '0.95em' }}>{feature}</span>
+                                <span style={{ color: accentColor, marginRight: '10px', fontWeight: 'bold', fontSize: '1em', marginTop: '2px', flexShrink: 0 }}>✓</span> 
+                                <span style={{ color: lightText }}>{feature}</span>
                             </li>
                         ))}
                     </ul>
@@ -349,7 +377,8 @@ function Projects() {
                                 alignItems: 'center',
                                 gap: '10px',
                                 marginTop: '30px',
-                                padding: '12px 24px',
+                                // FIX 7: Padding dan font size tombol lebih kecil di mobile
+                                padding: isMobile ? '10px 18px' : '12px 24px',
                                 backgroundColor: primaryColor,
                                 color: darkBg, 
                                 fontWeight: '700',
@@ -357,15 +386,19 @@ function Projects() {
                                 textDecoration: 'none',
                                 transition: 'all 0.3s ease',
                                 boxShadow: `0 10px 30px ${primaryColor}40`,
-                                fontSize: '0.95em'
+                                fontSize: isMobile ? '0.85em' : '0.95em'
                             }}
                             onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = 'translateY(-2px)';
-                                e.currentTarget.style.boxShadow = `0 15px 40px ${primaryColor}60`;
+                                if (!isMobile) {
+                                    e.currentTarget.style.transform = 'translateY(-2px)';
+                                    e.currentTarget.style.boxShadow = `0 15px 40px ${primaryColor}60`;
+                                }
                             }}
                             onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = 'translateY(0)';
-                                e.currentTarget.style.boxShadow = `0 10px 30px ${primaryColor}40`;
+                                if (!isMobile) {
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = `0 10px 30px ${primaryColor}40`;
+                                }
                             }}
                         >
                             {isGitHubLink ? 'Lihat Kode (GitHub)' : 'Kunjungi Website'}
@@ -383,7 +416,8 @@ function Projects() {
         <section 
             id="projects" 
             style={{ 
-                padding: '100px 20px',
+                // FIX 8: Sesuaikan padding section untuk mobile
+                padding: isMobile ? '60px 16px' : '100px 20px',
                 backgroundColor: darkBg,
                 textAlign: 'center',
                 color: lightText,
@@ -418,6 +452,7 @@ function Projects() {
                 pointerEvents: 'none'
             }} />
 
+            {/* FIX 9: Tambahkan media query untuk animasi yang lebih pendek di mobile */}
             <style>{`
                 @keyframes slideUp {
                     from {
@@ -429,11 +464,25 @@ function Projects() {
                         transform: translateY(0);
                     }
                 }
+                /* MOBILE ANIMATION ADJUSTMENT */
+                @media (max-width: 768px) {
+                    @keyframes slideUp {
+                        from {
+                            opacity: 0;
+                            transform: translateY(20px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                }
             `}</style>
 
             <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
                 <h2 style={{ 
-                    fontSize: 'clamp(2em, 8vw, 2.8em)', 
+                    // FIX 10: Font size header responsif
+                    fontSize: isMobile ? 'clamp(1.5em, 6vw, 2em)' : 'clamp(2em, 8vw, 2.8em)', 
                     marginBottom: '10px',
                     fontWeight: '800',
                     background: `linear-gradient(135deg, ${lightText}, ${accentColor})`,
@@ -444,10 +493,12 @@ function Projects() {
                     Portofolio <span style={{ color: accentColor }}>Proyek</span>
                 </h2>
                 <p style={{ 
-                    marginBottom: '60px', 
+                    // FIX 11: Margin dan font size deskripsi responsif
+                    marginBottom: isMobile ? '40px' : '60px', 
                     color: mutedText, 
-                    fontSize: '1.1em',
-                    fontWeight: '400'
+                    fontSize: isMobile ? '0.9em' : '1.1em',
+                    fontWeight: '400',
+                    padding: '0 10px'
                 }}>
                     Klik pada kartu proyek untuk melihat detail fitur dan galeri tampilan.
                 </p>
@@ -455,8 +506,10 @@ function Projects() {
                 <div 
                     style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
-                        gap: '30px',
+                        // FIX 12: Mengubah minmax dari 320px menjadi 280px
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
+                        // FIX 13: Gap lebih kecil di mobile
+                        gap: isMobile ? '20px' : '30px',
                         maxWidth: '1200px',
                         margin: '0 auto'
                     }}
@@ -467,19 +520,20 @@ function Projects() {
                         return (
                             <div 
                                 key={index}
-                                onMouseEnter={() => setHoveredIndex(index)}
-                                onMouseLeave={() => setHoveredIndex(null)}
+                                onMouseEnter={() => !isMobile && setHoveredIndex(index)}
+                                onMouseLeave={() => !isMobile && setHoveredIndex(null)}
                                 onClick={() => openModal(project)} 
                                 style={{
                                     backgroundColor: cardBg,
                                     border: `2px solid ${isCurrentHovered ? accentColor : 'rgba(14, 165, 233, 0.2)'}`,
                                     borderRadius: '14px',
-                                    padding: '30px',
+                                    padding: isMobile ? '20px' : '30px', // FIX: Padding kartu responsif
                                     textAlign: 'left',
                                     boxShadow: isCurrentHovered 
                                         ? `0 25px 60px rgba(6, 182, 212, 0.4), inset 0 0 30px rgba(6, 182, 212, 0.1)`
                                         : '0 10px 30px rgba(6, 182, 212, 0.1)',
-                                    transform: isCurrentHovered ? 'translateY(-10px)' : 'translateY(0)',
+                                    // FIX 14: Matikan hover transform di mobile
+                                    transform: isMobile ? 'translateY(0)' : (isCurrentHovered ? 'translateY(-10px)' : 'translateY(0)'),
                                     transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                                     cursor: 'pointer',
                                     position: 'relative',
@@ -507,13 +561,14 @@ function Projects() {
                                             alt={project.title} 
                                             style={{
                                                 width: '100%',
-                                                height: '200px', 
+                                                // FIX 15: Tinggi gambar kartu responsif
+                                                height: isMobile ? '150px' : '200px', 
                                                 borderRadius: '10px',
                                                 marginBottom: '20px', 
                                                 objectFit: 'cover',
                                                 border: `1px solid ${accentColor}20`,
                                                 transition: 'transform 0.4s ease',
-                                                transform: isCurrentHovered ? 'scale(1.02)' : 'scale(1)'
+                                                transform: isCurrentHovered && !isMobile ? 'scale(1.02)' : 'scale(1)'
                                             }}
                                         />
                                     )}
@@ -521,7 +576,8 @@ function Projects() {
                                     <h3 style={{ 
                                         color: lightText, 
                                         marginBottom: '10px', 
-                                        fontSize: '1.4em',
+                                        // FIX 16: Font size judul kartu responsif
+                                        fontSize: isMobile ? '1.1em' : '1.4em',
                                         fontWeight: '700',
                                         lineHeight: '1.3'
                                     }}>
@@ -529,7 +585,8 @@ function Projects() {
                                     </h3>
                                     <p style={{ 
                                         color: mutedText, 
-                                        fontSize: '0.95em', 
+                                        // FIX 17: Font size deskripsi kartu responsif
+                                        fontSize: isMobile ? '0.85em' : '0.95em', 
                                         marginBottom: '18px',
                                         lineHeight: '1.6',
                                         fontWeight: '400'
@@ -537,6 +594,7 @@ function Projects() {
                                         {project.description}
                                     </p>
                                     
+                                    {/* FIX 18: Memperbaiki kesalahan sintaks object style */}
                                     <div style={{ margin: '22px 0 18px 0', display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
                                         {project.type && (
                                             <span 
@@ -547,7 +605,8 @@ function Projects() {
                                                     color: primaryColor,
                                                     padding: '6px 12px', 
                                                     borderRadius: '20px', 
-                                                    fontSize: '0.8em',
+                                                    // FIX 19: Font size tag responsif
+                                                    fontSize: '0.75em',
                                                     fontWeight: '700',
                                                     textTransform: 'uppercase',
                                                     transition: 'all 0.3s ease',
@@ -566,9 +625,10 @@ function Projects() {
                                                     backgroundColor: `${accentColor}15`,
                                                     border: `1px solid ${accentColor}30`,
                                                     color: accentColor,
-                                                    padding: '6px 12px', 
+                                                    padding: '6px 10px', 
                                                     borderRadius: '20px', 
-                                                    fontSize: '0.8em',
+                                                    // FIX 20: Font size tag responsif
+                                                    fontSize: '0.75em',
                                                     fontWeight: '600',
                                                     transition: 'all 0.3s ease'
                                                 }}
@@ -583,9 +643,10 @@ function Projects() {
                                                     backgroundColor: `${accentColor}15`,
                                                     border: `1px solid ${accentColor}30`,
                                                     color: accentColor,
-                                                    padding: '6px 12px', 
+                                                    padding: '6px 10px', 
                                                     borderRadius: '20px', 
-                                                    fontSize: '0.8em',
+                                                    // FIX 21: Font size tag responsif
+                                                    fontSize: '0.75em',
                                                     fontWeight: '600'
                                                 }}
                                             >
@@ -598,8 +659,9 @@ function Projects() {
                                         marginTop: '20px',
                                         color: primaryColor,
                                         fontWeight: '700',
-                                        fontSize: '0.9em',
-                                        opacity: isCurrentHovered ? 1 : 0.7,
+                                        // FIX 22: Font size CTA responsif
+                                        fontSize: '0.85em',
+                                        opacity: isCurrentHovered && !isMobile ? 1 : 0.7,
                                         transition: 'opacity 0.3s ease',
                                         display: 'flex',
                                         alignItems: 'center',

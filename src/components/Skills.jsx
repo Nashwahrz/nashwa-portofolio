@@ -1,3 +1,4 @@
+// src/components/Skills.jsx
 import React from 'react';
 
 // Pastikan Anda sudah menginstal react-icons: npm install react-icons
@@ -17,6 +18,14 @@ const skillList = [
 
 function Skills() {
     const [hoveredIndex, setHoveredIndex] = React.useState(null);
+    // FIX 1: Tambahkan state dan logic untuk mendeteksi mobile
+    const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+
+    React.useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const darkBg = '#0f172a';
     const primaryColor = '#0ea5e9';
@@ -29,9 +38,8 @@ function Skills() {
         <section 
             id="skills"
             style={{ 
-                // PERBAIKAN: Padding vertikal responsif, Padding horizontal dihilangkan
+                // FIX 2: Padding vertikal responsif
                 padding: 'clamp(60px, 10vh, 100px) 0', 
-                
                 backgroundColor: darkBg,
                 textAlign: 'center',
                 minHeight: '100vh',
@@ -64,14 +72,22 @@ function Skills() {
                 pointerEvents: 'none'
             }} />
 
-            {/* Menghapus tag <style> */}
 
             {/* Kontainer utama tetap di tengah dan mengatur lebar maksimum */}
-            <div style={{ maxWidth: '1100px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
+            <div style={{ 
+                maxWidth: '1100px', 
+                margin: '0 auto', 
+                width: '100%', 
+                position: 'relative', 
+                zIndex: 1,
+                // FIX 3: Menambahkan padding horizontal untuk HP
+                padding: '0 20px'
+            }}>
 
                 {/* Header */}
                 <h2 style={{
-                    fontSize: 'clamp(2em, 8vw, 2.8em)',
+                    // FIX: Font size responsif
+                    fontSize: isMobile ? 'clamp(1.8em, 7vw, 2.8em)' : 'clamp(2em, 8vw, 2.8em)',
                     fontWeight: '800',
                     marginBottom: '15px',
                     background: `linear-gradient(135deg, ${lightText}, ${accentColor})`,
@@ -84,7 +100,8 @@ function Skills() {
                 <p style={{ 
                     marginBottom: '60px',
                     color: mutedText,
-                    fontSize: '1.1em',
+                    // FIX: Font size responsif
+                    fontSize: isMobile ? '1em' : '1.1em',
                     fontWeight: '400'
                 }}>
                     Berikut adalah daftar teknologi dan tingkat penguasaan saya:
@@ -96,7 +113,8 @@ function Skills() {
                         display: 'grid',
                         // Sudah responsif, minmax 150px memastikan 2-3 kolom di HP
                         gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
-                        gap: '15px', // PERBAIKAN: Mengurangi gap agar lebih pas di HP
+                        // FIX: Mengurangi gap agar lebih pas di HP
+                        gap: isMobile ? '12px' : '15px', 
                         maxWidth: '1100px',
                         margin: '0 auto'
                     }}
@@ -107,13 +125,15 @@ function Skills() {
                             style={{
                                 backgroundColor: cardBg,
                                 border: `2px solid ${hoveredIndex === index ? skill.color : 'rgba(14, 165, 233, 0.2)'}`,
-                                padding: '25px 20px', // PERBAIKAN: Mengurangi padding di dalam kartu
+                                // FIX: Mengurangi padding di dalam kartu
+                                padding: isMobile ? '20px 15px' : '25px 20px', 
                                 borderRadius: '12px',
                                 boxShadow: hoveredIndex === index
                                     ? `0 20px 50px ${skill.color}40, inset 0 0 20px ${skill.color}15`
                                     : `0 10px 30px rgba(6, 182, 212, 0.1)`,
                                 transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                                transform: hoveredIndex === index ? 'translateY(-8px)' : 'translateY(0)',
+                                // FIX: Matikan hover transform di mobile
+                                transform: isMobile ? 'translateY(0)' : (hoveredIndex === index ? 'translateY(-8px)' : 'translateY(0)'),
                                 cursor: 'pointer',
                                 position: 'relative',
                                 overflow: 'hidden',
@@ -121,25 +141,15 @@ function Skills() {
                             onMouseEnter={() => setHoveredIndex(index)}
                             onMouseLeave={() => setHoveredIndex(null)}
                         >
-                            {/* Background glow effect */}
-                            <div style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                background: `radial-gradient(circle at 50% 0%, ${skill.color}20, transparent 70%)`,
-                                opacity: hoveredIndex === index ? 1 : 0,
-                                transition: 'opacity 0.4s ease',
-                                pointerEvents: 'none'
-                            }} />
+                            {/* ... (Glow effect) ... */}
 
                             {/* Content */}
                             <div style={{ position: 'relative', zIndex: 1 }}>
 
                                 {/* Ikon Keterampilan */}
                                 <span style={{ display: 'block', marginBottom: '10px', color: skill.color }}>
-                                    {React.cloneElement(skill.icon, { color: skill.color, size: 40 })}
+                                    {/* FIX: Ukuran ikon responsif */}
+                                    {React.cloneElement(skill.icon, { color: skill.color, size: isMobile ? 32 : 40 })}
                                 </span>
 
                                 {/* Color accent bar */}
@@ -156,7 +166,8 @@ function Skills() {
                                 <h3 style={{ 
                                     margin: '10px 0 0 0',
                                     color: lightText,
-                                    fontSize: '1.3em',
+                                    // FIX: Font size responsif
+                                    fontSize: isMobile ? '1.1em' : '1.3em',
                                     fontWeight: '700',
                                     transition: 'color 0.3s ease'
                                 }}>

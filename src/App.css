@@ -29,7 +29,8 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    place-items: center;
+    /* FIX: Diganti agar konten mulai dari atas */
+    align-items: flex-start; 
     min-height: 100vh;
 }
 
@@ -44,7 +45,6 @@ body {
     width: 100%;
     text-align: center;
     box-sizing: border-box;
-    /* overflow-x: hidden dihapus dari #root, dipindah ke html */
 }
 
 /* ========== FONT & STYLES BAWAAN ========== */

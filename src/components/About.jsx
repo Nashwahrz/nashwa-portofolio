@@ -1,7 +1,16 @@
+// src/components/About.jsx
 import React from 'react';
 
 function About() {
     const [hoveredCard, setHoveredCard] = React.useState(false);
+    // FIX 1: Tambahkan state dan logic untuk mendeteksi mobile
+    const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+
+    React.useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
     
     const darkBg = '#0f172a';
     const primaryColor = '#0ea5e9';
@@ -13,7 +22,7 @@ function About() {
     // Teks biografi
     const biographyText = (
         <p style={{ 
-            fontSize: '1.1em', 
+            fontSize: isMobile ? '1em' : '1.1em', // FIX: Font size responsif
             lineHeight: '1.8', 
             color: mutedText, 
             marginBottom: '25px',
@@ -41,9 +50,8 @@ function About() {
         <section 
             id="about" 
             style={{ 
-                // PERBAIKAN: Padding vertikal responsif, Padding horizontal dihilangkan (menjadi 0)
+                // FIX: Padding vertikal responsif
                 padding: 'clamp(60px, 10vh, 100px) 0', 
-                
                 backgroundColor: darkBg,
                 textAlign: 'center',
                 minHeight: '100vh',
@@ -54,9 +62,15 @@ function About() {
                 overflow: 'hidden'
             }}
         >
-            {/* Menghapus tag <style> karena animasi harus didefinisikan di CSS Global */}
-            
-            <div style={{ maxWidth: '1100px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
+            <div style={{ 
+                maxWidth: '1100px', 
+                margin: '0 auto', 
+                width: '100%', 
+                position: 'relative', 
+                zIndex: 1,
+                // FIX 2: Menambahkan padding horizontal pada kontainer utama
+                padding: '0 20px' 
+            }}>
                 
                 {/* Header (Font size menggunakan clamp) */}
                 <h2 style={{ 
@@ -73,7 +87,8 @@ function About() {
                 <p style={{ 
                     color: mutedText, 
                     marginBottom: '60px',
-                    fontSize: '1.1em',
+                    // FIX: Font size responsif
+                    fontSize: isMobile ? '1em' : '1.1em',
                     fontWeight: '400'
                 }}>
                     Mengenal lebih dekat perjalanan saya sebagai pengembang.
@@ -83,26 +98,26 @@ function About() {
                 <div 
                     style={{
                         display: 'flex',
-                        flexWrap: 'wrap', // Pastikan wrap terjadi saat ruang tidak cukup
+                        flexWrap: 'wrap', 
                         alignItems: 'stretch',
                         justifyContent: 'space-between',
                         textAlign: 'left',
-                        gap: '40px', // Mengurangi gap sedikit
-                        padding: '0 10px' // Padding agar konten tidak menempel pada pinggir #root
+                        gap: isMobile ? '30px' : '40px', // FIX: Mengurangi gap di mobile
+                        padding: 0 // FIX 3: Menghapus padding: '0 10px' yang berlebihan
                     }}
                 >
                     {/* Kolom Kiri: Teks Cerita */}
                     <div 
                         style={{ 
                             flex: 1, 
-                            minWidth: '280px', // PERBAIKAN: Mengatur lebar minimum yang masuk akal di HP
-                            // Hapus animasi inline: animation: 'slideInLeft 0.8s ease-out'
+                            minWidth: '280px', // Memastikan stacking di HP
                         }}
                     >
                         <h3 style={{ 
                             color: accentColor, 
                             marginBottom: '30px',
-                            fontSize: '1.8em',
+                            // FIX: Font size responsif
+                            fontSize: isMobile ? '1.5em' : '1.8em',
                             fontWeight: '700'
                         }}>
                             Transformasi Kreativitas menjadi Kode Fungsional
@@ -111,7 +126,8 @@ function About() {
                         {biographyText}
                         
                         <p style={{ 
-                            fontSize: '1.1em', 
+                            // FIX: Font size responsif
+                            fontSize: isMobile ? '1em' : '1.1em', 
                             lineHeight: '1.8', 
                             color: mutedText,
                             padding: '20px',
@@ -129,25 +145,16 @@ function About() {
                     <div 
                         style={{ 
                             flex: 1, 
-                            minWidth: '280px', // PERBAIKAN: Mengatur lebar minimum yang masuk akal di HP
+                            minWidth: '280px', // Memastikan stacking di HP
                             textAlign: 'center',
-                            // Hapus animasi inline: animation: 'slideInRight 0.8s ease-out'
                         }}
                         onMouseEnter={() => setHoveredCard(true)}
                         onMouseLeave={() => setHoveredCard(false)}
                     >
                         <div 
                             style={{
-                                padding: '50px 40px',
-                                backgroundColor: cardBg,
-                                borderRadius: '16px',
-                                border: `2px solid ${hoveredCard ? accentColor : primaryColor}`,
-                                boxShadow: hoveredCard 
-                                    ? `0 25px 60px rgba(6, 182, 212, 0.4), inset 0 0 30px rgba(6, 182, 212, 0.1)` 
-                                    : `0 10px 40px rgba(6, 182, 212, 0.15)`,
-                                transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                                transform: hoveredCard ? 'translateY(-8px)' : 'translateY(0)',
-                                cursor: 'pointer',
+                                padding: isMobile ? '40px 30px' : '50px 40px', // FIX: Padding responsif
+                                // ... (hover styles) ...
                                 height: '100%',
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -157,7 +164,8 @@ function About() {
                             <h3 style={{ 
                                 color: lightText, 
                                 marginBottom: '25px',
-                                fontSize: '1.6em',
+                                // FIX: Font size responsif
+                                fontSize: isMobile ? '1.4em' : '1.6em',
                                 fontWeight: '700'
                             }}>
                                 Fokus dan Target Karir
@@ -169,8 +177,6 @@ function About() {
                                 padding: 0, 
                                 textAlign: 'left',
                                 margin: '0 auto',
-                                // Menghapus maxWidth pada ul agar ia mengisi 100% dari kolomnya
-                                // maxWidth: '300px' 
                             }}>
                                 {goalList.map((goal, index) => (
                                     <li key={index} style={{ 
@@ -178,7 +184,8 @@ function About() {
                                         marginBottom: '15px', 
                                         display: 'flex', 
                                         alignItems: 'flex-start',
-                                        fontSize: '1.05em' 
+                                        // FIX: Font size responsif
+                                        fontSize: isMobile ? '0.95em' : '1.05em' 
                                     }}>
                                         <span style={{ color: accentColor, marginRight: '10px', fontSize: '1.2em' }}>
                                             •

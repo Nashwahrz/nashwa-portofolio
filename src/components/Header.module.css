@@ -30,3 +30,17 @@
     /* Text shadow untuk penekanan */
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.8); 
 }
+
+/* --- FIX: MOBILE RESPONSIVENESS (<= 768px) --- */
+@media (max-width: 768px) {
+    .headerContainer {
+        flex-direction: column; /* Menumpuk vertikal */
+        padding: 15px 20px; /* Padding lebih kecil */
+        text-align: center;
+    }
+
+    .headerTitle {
+        margin-bottom: 10px;
+        font-size: 1.5em; /* Ukuran font lebih kecil */
+    }
+}

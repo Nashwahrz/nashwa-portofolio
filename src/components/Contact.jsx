@@ -5,6 +5,15 @@ import React from 'react';
 import { Mail, Github, MessageCircleMore, Instagram, Download } from 'lucide-react'; 
 
 function Contact() {
+    // FIX 1: Tambahkan state dan logic untuk mendeteksi mobile
+    const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+
+    React.useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     // DEFINE WARNA TEMA
     const darkBg = '#0f172a';
     const primaryColor = '#0ea5e9'; // Biru terang (Digunakan untuk Email dan CV)
@@ -30,14 +39,18 @@ function Contact() {
     // Fungsi Reusable untuk Hover Effect
     const createHoverHandlers = (color) => ({
         onMouseEnter: (e) => {
-            e.currentTarget.style.borderColor = color;
-            e.currentTarget.style.boxShadow = `0 20px 50px ${color}30`;
-            e.currentTarget.style.transform = 'translateX(10px)';
+             if (!isMobile) { // FIX: Hanya aktifkan di desktop
+                e.currentTarget.style.borderColor = color;
+                e.currentTarget.style.boxShadow = `0 20px 50px ${color}30`;
+                e.currentTarget.style.transform = 'translateX(10px)';
+            }
         },
         onMouseLeave: (e) => {
-            e.currentTarget.style.borderColor = color + '33'; // Transparan 20%
-            e.currentTarget.style.boxShadow = 'none';
-            e.currentTarget.style.transform = 'translateX(0)';
+            if (!isMobile) { // FIX: Hanya aktifkan di desktop
+                e.currentTarget.style.borderColor = color + '33'; // Transparan 20%
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.transform = 'translateX(0)';
+            }
         }
     });
     
@@ -51,7 +64,8 @@ function Contact() {
         <section 
             id="contact"
             style={{ 
-                padding: '100px 20px',
+                // FIX 2: Padding section responsif
+                padding: isMobile ? '60px 20px' : '100px 20px',
                 backgroundColor: darkBg,
                 minHeight: '80vh', 
                 display: 'flex',
@@ -84,11 +98,21 @@ function Contact() {
                 pointerEvents: 'none'
             }} />
 
-            <div style={{ maxWidth: '700px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1, textAlign: 'center' }}>
+            <div style={{ 
+                maxWidth: '700px', 
+                margin: '0 auto', 
+                width: '100%', 
+                position: 'relative', 
+                zIndex: 1, 
+                textAlign: 'center',
+                // FIX 3: Padding horizontal di mobile
+                padding: isMobile ? '0 10px' : '0'
+            }}>
                 
                 {/* Header */}
                 <h2 style={{
-                    fontSize: 'clamp(2em, 8vw, 2.8em)',
+                    // FIX 4: Font size header responsif
+                    fontSize: isMobile ? 'clamp(1.8em, 7vw, 2.8em)' : 'clamp(2em, 8vw, 2.8em)',
                     fontWeight: '800',
                     marginBottom: '15px',
                     background: `linear-gradient(135deg, ${lightText}, ${accentColor})`,
@@ -100,9 +124,10 @@ function Contact() {
                     Hubungi Saya Langsung
                 </h2>
                 <p style={{ 
-                    marginBottom: '60px',
+                    // FIX 5: Margin dan font size responsif
+                    marginBottom: isMobile ? '40px' : '60px',
                     color: mutedText,
-                    fontSize: '1.1em',
+                    fontSize: isMobile ? '0.95em' : '1.1em',
                     fontWeight: '400',
                     textAlign: 'center',
                 }}>
@@ -112,10 +137,11 @@ function Contact() {
                 {/* Contact Info Grid */}
                 <div style={{ 
                     display: 'grid',
-                    // Grid disesuaikan untuk memuat 5 item (minimal 2 kolom)
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
-                    gap: '20px',
-                    maxWidth: '850px', // Lebar diperluas agar 5 kartu muat lebih baik
+                    // FIX 6: Grid lebih fleksibel di HP/Tablet
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+                    // FIX 7: Gap responsif
+                    gap: isMobile ? '15px' : '20px',
+                    maxWidth: '850px', 
                     margin: '0 auto',
                     marginBottom: '50px',
                 }}>
@@ -123,25 +149,28 @@ function Contact() {
                     {/* 1. Unduh CV (BARU) */}
                     <a 
                         href={cvFilePath}
-                        download // Atribut download akan memaksa browser untuk mengunduh
+                        download 
                         style={{
                             display: 'flex',
                             alignItems: 'center',
                             gap: '15px',
-                            padding: '20px',
+                            // FIX 8: Padding card responsif
+                            padding: isMobile ? '15px' : '20px',
                             backgroundColor: cardBg,
-                            border: `2px solid rgba(255, 215, 0, 0.2)`, // Border Kuning transparan
+                            border: `2px solid rgba(255, 215, 0, 0.2)`, 
                             borderRadius: '12px',
                             textDecoration: 'none',
                             transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                             cursor: 'pointer',
+                            // FIX 9: Matikan transform hover di mobile
+                            transform: isMobile ? 'translateX(0)' : (cvHandlers.onMouseEnter ? 'translateX(0)' : 'translateX(0)')
                         }}
                         {...cvHandlers}
                     >
-                        <Download size={28} color={cvColor} />
+                        <Download size={isMobile ? 24 : 28} color={cvColor} />
                         <div style={{ textAlign: 'left' }}>
-                            <p style={{ margin: '0', color: mutedText, fontSize: '0.9em' }}>Portofolio Dokumen</p>
-                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: '1.05em' }}>
+                            <p style={{ margin: '0', color: mutedText, fontSize: isMobile ? '0.8em' : '0.9em' }}>Portofolio Dokumen</p>
+                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: isMobile ? '0.95em' : '1.05em' }}>
                                 Unduh CV Saya
                             </p>
                         </div>
@@ -154,20 +183,21 @@ function Contact() {
                             display: 'flex',
                             alignItems: 'center',
                             gap: '15px',
-                            padding: '20px',
+                            padding: isMobile ? '15px' : '20px',
                             backgroundColor: cardBg,
                             border: `2px solid rgba(14, 165, 233, 0.2)`,
                             borderRadius: '12px',
                             textDecoration: 'none',
                             transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                             cursor: 'pointer',
+                            transform: isMobile ? 'translateX(0)' : (emailHandlers.onMouseEnter ? 'translateX(0)' : 'translateX(0)')
                         }}
                         {...emailHandlers}
                     >
-                        <Mail size={28} color={primaryColor} />
+                        <Mail size={isMobile ? 24 : 28} color={primaryColor} />
                         <div style={{ textAlign: 'left' }}>
-                            <p style={{ margin: '0', color: mutedText, fontSize: '0.9em' }}>Email</p>
-                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: '1.05em' }}>
+                            <p style={{ margin: '0', color: mutedText, fontSize: isMobile ? '0.8em' : '0.9em' }}>Email</p>
+                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: isMobile ? '0.95em' : '1.05em' }}>
                                 {emailAddress}
                             </p>
                         </div>
@@ -182,20 +212,21 @@ function Contact() {
                             display: 'flex',
                             alignItems: 'center',
                             gap: '15px',
-                            padding: '20px',
+                            padding: isMobile ? '15px' : '20px',
                             backgroundColor: cardBg,
                             border: `2px solid rgba(6, 182, 212, 0.2)`,
                             borderRadius: '12px',
                             textDecoration: 'none',
                             transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            cursor: 'pointer'
+                            cursor: 'pointer',
+                            transform: isMobile ? 'translateX(0)' : (githubHandlers.onMouseEnter ? 'translateX(0)' : 'translateX(0)')
                         }}
                         {...githubHandlers}
                     >
-                        <Github size={28} color={accentColor} />
+                        <Github size={isMobile ? 24 : 28} color={accentColor} />
                         <div style={{ textAlign: 'left' }}>
-                            <p style={{ margin: '0', color: mutedText, fontSize: '0.9em' }}>GitHub</p>
-                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: '1.05em' }}>
+                            <p style={{ margin: '0', color: mutedText, fontSize: isMobile ? '0.8em' : '0.9em' }}>GitHub</p>
+                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: isMobile ? '0.95em' : '1.05em' }}>
                                 {githubUrl.replace('https://', '')}
                             </p>
                         </div>
@@ -210,20 +241,21 @@ function Contact() {
                             display: 'flex',
                             alignItems: 'center',
                             gap: '15px',
-                            padding: '20px',
+                            padding: isMobile ? '15px' : '20px',
                             backgroundColor: cardBg,
                             border: `2px solid rgba(37, 211, 102, 0.2)`,
                             borderRadius: '12px',
                             textDecoration: 'none',
                             transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            cursor: 'pointer'
+                            cursor: 'pointer',
+                            transform: isMobile ? 'translateX(0)' : (whatsappHandlers.onMouseEnter ? 'translateX(0)' : 'translateX(0)')
                         }}
                         {...whatsappHandlers}
                     >
-                        <MessageCircleMore size={28} color={whatsappColor} />
+                        <MessageCircleMore size={isMobile ? 24 : 28} color={whatsappColor} />
                         <div style={{ textAlign: 'left' }}>
-                            <p style={{ margin: '0', color: mutedText, fontSize: '0.9em' }}>WhatsApp</p>
-                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: '1.05em' }}>
+                            <p style={{ margin: '0', color: mutedText, fontSize: isMobile ? '0.8em' : '0.9em' }}>WhatsApp</p>
+                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: isMobile ? '0.95em' : '1.05em' }}>
                                 +{whatsappNumber}
                             </p>
                         </div>
@@ -238,20 +270,21 @@ function Contact() {
                             display: 'flex',
                             alignItems: 'center',
                             gap: '15px',
-                            padding: '20px',
+                            padding: isMobile ? '15px' : '20px',
                             backgroundColor: cardBg,
                             border: `2px solid rgba(225, 48, 108, 0.2)`,
                             borderRadius: '12px',
                             textDecoration: 'none',
                             transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            cursor: 'pointer'
+                            cursor: 'pointer',
+                            transform: isMobile ? 'translateX(0)' : (instagramHandlers.onMouseEnter ? 'translateX(0)' : 'translateX(0)')
                         }}
                         {...instagramHandlers}
                     >
-                        <Instagram size={28} color={instagramColor} />
+                        <Instagram size={isMobile ? 24 : 28} color={instagramColor} />
                         <div style={{ textAlign: 'left' }}>
-                            <p style={{ margin: '0', color: mutedText, fontSize: '0.9em' }}>Instagram</p>
-                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: '1.05em' }}>
+                            <p style={{ margin: '0', color: mutedText, fontSize: isMobile ? '0.8em' : '0.9em' }}>Instagram</p>
+                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: isMobile ? '0.95em' : '1.05em' }}>
                                 @{instagramHandle}
                             </p>
                         </div>

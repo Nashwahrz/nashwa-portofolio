@@ -18,7 +18,9 @@ const useHeroStyles = (isPhotoHovered, isButtonHovered, isMobile) => {
         justifyContent: 'center',
         gap: '10px',
         margin: '0 auto', 
+        // FIX: Menggunakan isMobile untuk padding tombol
         padding: isMobile ? '12px 28px' : '16px 40px',
+        // FIX: Menggunakan isMobile untuk font size tombol
         fontSize: isMobile ? '0.95em' : '1.1em',
         fontWeight: '700',
         letterSpacing: '0.5px',
@@ -34,9 +36,11 @@ const useHeroStyles = (isPhotoHovered, isButtonHovered, isMobile) => {
         boxShadow: isButtonHovered 
             ? `0 20px 50px rgba(6, 182, 212, 0.6)` 
             : `0 10px 30px rgba(6, 182, 212, 0.3)`,
+        // FIX: Matikan transform hover di mobile
         transform: isButtonHovered && !isMobile ? 'translateY(-4px) scale(1.02)' : 'translateY(0) scale(1)',
     };
 
+    // FIX: Ukuran foto responsif
     const photoSize = isMobile ? '140px' : '180px';
     const photoContainerStyle = {
         position: 'relative',
@@ -81,11 +85,9 @@ function Hero() {
         <section 
             style={{
                 display: 'flex',
-                // PERBAIKAN: Menghapus alignItems: 'center' agar konten mulai dari atas
-                // alignItems: 'center', 
                 justifyContent: 'center',
                 minHeight: '100vh', 
-                // Padding vertikal responsif, Padding horizontal dihilangkan
+                // FIX: Padding vertikal responsif
                 padding: isMobile ? '40px 0' : '60px 0',
                 backgroundColor: darkBg,
                 color: lightText,
@@ -112,6 +114,13 @@ function Hero() {
                     }
                 }
 
+                @media (max-width: 768px) {
+                     @keyframes fadeInUp {
+                        from { opacity: 0; transform: translateY(20px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+                }
+
                 .hero-content > * {
                     animation: fadeInUp 0.8s ease-out forwards;
                 }
@@ -131,8 +140,9 @@ function Hero() {
                 margin: '0 auto', 
                 textAlign: 'center',
                 width: '100%',
-                padding: '0 clamp(0px, 2vw, 20px)', // Padding horizontal kecil
-                // PERBAIKAN: Tambahkan padding top yang cukup besar agar konten tidak menempel di atas
+                // FIX: Memastikan padding horizontal kecil yang responsif
+                padding: '0 clamp(10px, 4vw, 30px)', 
+                // FIX: Tambahkan padding top yang cukup besar 
                 paddingTop: 'clamp(50px, 10vh, 100px)' 
             }}>
                 
@@ -200,6 +210,7 @@ function Hero() {
 
                 {/* Judul Utama */}
                 <h1 style={{
+                    // FIX: Menggunakan clamp untuk font size responsif
                     fontSize: 'clamp(2em, 8vw, 4.5em)',
                     fontWeight: '800',
                     marginBottom: '10px',
@@ -230,6 +241,7 @@ function Hero() {
                     padding: '0 10px'
                 }}>
                     <p style={{ 
+                        // FIX: Menggunakan clamp untuk font size responsif
                         fontSize: 'clamp(1em, 3vw, 1.6em)', 
                         fontWeight: '600', 
                         color: primaryColor, 
@@ -247,6 +259,7 @@ function Hero() {
                 
                 {/* Ringkasan/Motto */}
                 <p style={{
+                    // FIX: Menggunakan clamp untuk font size responsif
                     fontSize: 'clamp(1.2em, 5vw, 2.2em)',
                     fontWeight: '600',
                     color: accentColor,
@@ -258,6 +271,7 @@ function Hero() {
                 </p>
 
                 <p style={{
+                    // FIX: Menggunakan clamp untuk font size responsif
                     fontSize: 'clamp(0.9em, 3vw, 1.3em)',
                     color: mutedText,
                     lineHeight: '1.8',

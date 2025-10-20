@@ -1,6 +1,7 @@
 // src/App.jsx
 
 import React from 'react';
+// FIX 1: Import Header
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -13,7 +14,8 @@ import { MessageCircleMore } from 'lucide-react';
 
 function App() {
     
-    const whatsappNumber = "6282384522629"; 
+    // FIX 2: Angka WhatsApp disesuaikan dengan yang ada di Contact.jsx (6282383522629)
+    const whatsappNumber = "6282383522629"; 
     const whatsappLink = `https://wa.me/${whatsappNumber}`;
 
     const whatsappColor = '#25D366';
@@ -23,7 +25,8 @@ function App() {
         
         <>
             
-            
+            {/* FIX 3: Tambahkan Header di luar tag <main> agar menempel di atas (sticky) */}
+            <Header /> 
             
             <main>
                 <Hero /> 
@@ -72,8 +75,7 @@ function App() {
                 <MessageCircleMore size={'clamp(24px, 8vw, 32px)'} color={darkBg} strokeWidth={2} /> 
             </a>
 
-            {/*      
-                <Footer />  */}
+            {/* <Footer /> dihapus karena tidak ada komponennya */}
             
         </>
     );
