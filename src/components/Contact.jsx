@@ -1,295 +1,198 @@
-// Pastikan file ini disimpan sebagai: src/components/Contact.jsx
-
+// src/components/Contact.jsx
 import React from 'react';
-// FIX: Import semua ikon yang diperlukan (termasuk Download untuk CV)
-import { Mail, Github, MessageCircleMore, Instagram, Download } from 'lucide-react'; 
+import { Mail, Github, MessageCircleMore, Instagram, Download, Send } from 'lucide-react';
 
-function Contact() {
-    // FIX 1: Tambahkan state dan logic untuk mendeteksi mobile
-    const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+const contacts = [
+    {
+        id: 'cv',
+        icon: <Download size={22} />,
+        label: 'Portofolio Dokumen',
+        value: 'Unduh CV Saya',
+        href: '/cv_nashwa.pdf',
+        download: true,
+        color: '#ffd60a',
+    },
+    {
+        id: 'email',
+        icon: <Mail size={22} />,
+        label: 'Email',
+        value: 'nashwaharzathi05@email.com',
+        href: 'mailto:nashwaharzathi05@email.com',
+        color: '#00b4d8',
+    },
+    {
+        id: 'github',
+        icon: <Github size={22} />,
+        label: 'GitHub',
+        value: 'github.com/Nashwahrz',
+        href: 'https://github.com/Nashwahrz/',
+        target: '_blank',
+        color: '#a8c8e8',
+    },
+    {
+        id: 'whatsapp',
+        icon: <MessageCircleMore size={22} />,
+        label: 'WhatsApp',
+        value: '+6282383522629',
+        href: 'https://wa.me/6282383522629',
+        target: '_blank',
+        color: '#25D366',
+    },
+    {
+        id: 'instagram',
+        icon: <Instagram size={22} />,
+        label: 'Instagram',
+        value: '@nsshw.z',
+        href: 'https://www.instagram.com/nsshw.z',
+        target: '_blank',
+        color: '#E1306C',
+    },
+];
 
-    React.useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 768);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    // DEFINE WARNA TEMA
-    const darkBg = '#0f172a';
-    const primaryColor = '#0ea5e9'; // Biru terang (Digunakan untuk Email dan CV)
-    const accentColor = '#06b6d4'; // Biru Cyan (Digunakan untuk GitHub)
-    const lightText = '#f1f5f9';
-    const mutedText = '#cbd5e1';
-    const cardBg = '#1e293b';
-    
-    // Warna spesifik untuk ikon media sosial
-    const whatsappColor = '#25D366'; // Hijau WhatsApp
-    const instagramColor = '#E1306C'; // Merah Muda/Magenta Instagram
-    const cvColor = '#FFD700'; // Kuning Emas untuk CV (Menarik perhatian)
-
-    // Detail Kontak
-    const emailAddress = "nashwaharzathi05@email.com";
-    const githubUrl = "https://github.com/Nashwahrz/"; 
-    const whatsappNumber = "6282383522629"; 
-    const instagramHandle = "nsshw.z"; 
-    
-    // Asumsi: File CV ada di folder public/
-    const cvFilePath = "/cv_nashwa.pdf"; 
-
-    // Fungsi Reusable untuk Hover Effect
-    const createHoverHandlers = (color) => ({
-        onMouseEnter: (e) => {
-             if (!isMobile) { // FIX: Hanya aktifkan di desktop
-                e.currentTarget.style.borderColor = color;
-                e.currentTarget.style.boxShadow = `0 20px 50px ${color}30`;
-                e.currentTarget.style.transform = 'translateX(10px)';
-            }
-        },
-        onMouseLeave: (e) => {
-            if (!isMobile) { // FIX: Hanya aktifkan di desktop
-                e.currentTarget.style.borderColor = color + '33'; // Transparan 20%
-                e.currentTarget.style.boxShadow = 'none';
-                e.currentTarget.style.transform = 'translateX(0)';
-            }
-        }
-    });
-    
-    const emailHandlers = createHoverHandlers(primaryColor);
-    const githubHandlers = createHoverHandlers(accentColor);
-    const whatsappHandlers = createHoverHandlers(whatsappColor);
-    const instagramHandlers = createHoverHandlers(instagramColor);
-    const cvHandlers = createHoverHandlers(cvColor); // Handler baru untuk CV
+function ContactCard({ contact }) {
+    const [hovered, setHovered] = React.useState(false);
 
     return (
-        <section 
-            id="contact"
-            style={{ 
-                // FIX 2: Padding section responsif
-                padding: isMobile ? '60px 20px' : '100px 20px',
-                backgroundColor: darkBg,
-                minHeight: '80vh', 
+        <a
+            href={contact.href}
+            download={contact.download || undefined}
+            target={contact.target || undefined}
+            rel={contact.target ? 'noopener noreferrer' : undefined}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            style={{
                 display: 'flex',
                 alignItems: 'center',
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-                position: 'relative',
-                overflow: 'hidden'
+                gap: '16px',
+                padding: 'clamp(14px, 2.5vw, 20px)',
+                background: hovered ? `rgba(${contact.color === '#ffd60a' ? '255,214,10' : '17,34,64'},0.9)` : 'var(--bg-card)',
+                border: `1px solid ${hovered ? contact.color + '60' : 'rgba(0,180,216,0.12)'}`,
+                borderRadius: '14px',
+                textDecoration: 'none',
+                transition: 'all 0.35s ease',
+                transform: hovered ? 'translateX(8px)' : 'translateX(0)',
+                boxShadow: hovered ? `0 12px 30px ${contact.color}20` : 'none',
+                cursor: 'pointer',
             }}
         >
-            {/* Background decoration (Tidak diubah) */}
+            {/* Icon circle */}
             <div style={{
-                position: 'absolute',
-                width: '400px',
-                height: '400px',
-                background: `radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%)`,
-                borderRadius: '50%',
-                top: '50%',
-                left: '-100px',
-                transform: 'translateY(-50%)',
-                pointerEvents: 'none'
-            }} />
-            <div style={{
-                position: 'absolute',
-                width: '500px',
-                height: '500px',
-                background: `radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, transparent 70%)`,
-                borderRadius: '50%',
-                bottom: '-100px',
-                right: '-100px',
-                pointerEvents: 'none'
-            }} />
-
-            <div style={{ 
-                maxWidth: '700px', 
-                margin: '0 auto', 
-                width: '100%', 
-                position: 'relative', 
-                zIndex: 1, 
-                textAlign: 'center',
-                // FIX 3: Padding horizontal di mobile
-                padding: isMobile ? '0 10px' : '0'
+                width: '48px',
+                height: '48px',
+                borderRadius: '12px',
+                background: `${contact.color}15`,
+                border: `1px solid ${contact.color}40`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: contact.color,
+                flexShrink: 0,
+                transition: 'all 0.3s ease',
+                boxShadow: hovered ? `0 0 16px ${contact.color}30` : 'none',
             }}>
-                
-                {/* Header */}
-                <h2 style={{
-                    // FIX 4: Font size header responsif
-                    fontSize: isMobile ? 'clamp(1.8em, 7vw, 2.8em)' : 'clamp(2em, 8vw, 2.8em)',
-                    fontWeight: '800',
-                    marginBottom: '15px',
-                    background: `linear-gradient(135deg, ${lightText}, ${accentColor})`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    textAlign: 'center',
+                {contact.icon}
+            </div>
+
+            {/* Text */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{
+                    color: 'var(--text-muted)',
+                    fontSize: '0.78rem',
+                    fontWeight: '500',
+                    marginBottom: '3px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
                 }}>
-                    Hubungi Saya Langsung
-                </h2>
-                <p style={{ 
-                    // FIX 5: Margin dan font size responsif
-                    marginBottom: isMobile ? '40px' : '60px',
-                    color: mutedText,
-                    fontSize: isMobile ? '0.95em' : '1.1em',
-                    fontWeight: '400',
-                    textAlign: 'center',
-                }}>
-                    Anda dapat menghubungi saya dengan cepat melalui tautan berikut:
+                    {contact.label}
                 </p>
-
-                {/* Contact Info Grid */}
-                <div style={{ 
-                    display: 'grid',
-                    // FIX 6: Grid lebih fleksibel di HP/Tablet
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-                    // FIX 7: Gap responsif
-                    gap: isMobile ? '15px' : '20px',
-                    maxWidth: '850px', 
-                    margin: '0 auto',
-                    marginBottom: '50px',
+                <p style={{
+                    color: hovered ? contact.color : 'var(--text-primary)',
+                    fontSize: 'clamp(0.82rem, 2vw, 0.95rem)',
+                    fontWeight: '600',
+                    transition: 'color 0.3s ease',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
                 }}>
-                    
-                    {/* 1. Unduh CV (BARU) */}
-                    <a 
-                        href={cvFilePath}
-                        download 
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '15px',
-                            // FIX 8: Padding card responsif
-                            padding: isMobile ? '15px' : '20px',
-                            backgroundColor: cardBg,
-                            border: `2px solid rgba(255, 215, 0, 0.2)`, 
-                            borderRadius: '12px',
-                            textDecoration: 'none',
-                            transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            cursor: 'pointer',
-                            // FIX 9: Matikan transform hover di mobile
-                            transform: isMobile ? 'translateX(0)' : (cvHandlers.onMouseEnter ? 'translateX(0)' : 'translateX(0)')
-                        }}
-                        {...cvHandlers}
-                    >
-                        <Download size={isMobile ? 24 : 28} color={cvColor} />
-                        <div style={{ textAlign: 'left' }}>
-                            <p style={{ margin: '0', color: mutedText, fontSize: isMobile ? '0.8em' : '0.9em' }}>Portofolio Dokumen</p>
-                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: isMobile ? '0.95em' : '1.05em' }}>
-                                Unduh CV Saya
-                            </p>
-                        </div>
-                    </a>
+                    {contact.value}
+                </p>
+            </div>
 
-                    {/* 2. Email */}
-                    <a 
-                        href={`mailto:${emailAddress}`}
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '15px',
-                            padding: isMobile ? '15px' : '20px',
-                            backgroundColor: cardBg,
-                            border: `2px solid rgba(14, 165, 233, 0.2)`,
-                            borderRadius: '12px',
-                            textDecoration: 'none',
-                            transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            cursor: 'pointer',
-                            transform: isMobile ? 'translateX(0)' : (emailHandlers.onMouseEnter ? 'translateX(0)' : 'translateX(0)')
-                        }}
-                        {...emailHandlers}
-                    >
-                        <Mail size={isMobile ? 24 : 28} color={primaryColor} />
-                        <div style={{ textAlign: 'left' }}>
-                            <p style={{ margin: '0', color: mutedText, fontSize: isMobile ? '0.8em' : '0.9em' }}>Email</p>
-                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: isMobile ? '0.95em' : '1.05em' }}>
-                                {emailAddress}
-                            </p>
-                        </div>
-                    </a>
+            {/* Arrow */}
+            <Send size={16} style={{
+                color: hovered ? contact.color : 'var(--text-muted)',
+                transition: 'all 0.3s ease',
+                transform: hovered ? 'translateX(3px)' : 'translateX(0)',
+                opacity: hovered ? 1 : 0.4,
+                flexShrink: 0,
+            }} />
+        </a>
+    );
+}
 
-                    {/* 3. GitHub */}
-                    <a 
-                        href={githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '15px',
-                            padding: isMobile ? '15px' : '20px',
-                            backgroundColor: cardBg,
-                            border: `2px solid rgba(6, 182, 212, 0.2)`,
-                            borderRadius: '12px',
-                            textDecoration: 'none',
-                            transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            cursor: 'pointer',
-                            transform: isMobile ? 'translateX(0)' : (githubHandlers.onMouseEnter ? 'translateX(0)' : 'translateX(0)')
-                        }}
-                        {...githubHandlers}
-                    >
-                        <Github size={isMobile ? 24 : 28} color={accentColor} />
-                        <div style={{ textAlign: 'left' }}>
-                            <p style={{ margin: '0', color: mutedText, fontSize: isMobile ? '0.8em' : '0.9em' }}>GitHub</p>
-                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: isMobile ? '0.95em' : '1.05em' }}>
-                                {githubUrl.replace('https://', '')}
-                            </p>
-                        </div>
-                    </a>
-                    
-                    {/* 4. WhatsApp */}
-                    <a 
-                        href={`https://wa.me/${whatsappNumber}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '15px',
-                            padding: isMobile ? '15px' : '20px',
-                            backgroundColor: cardBg,
-                            border: `2px solid rgba(37, 211, 102, 0.2)`,
-                            borderRadius: '12px',
-                            textDecoration: 'none',
-                            transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            cursor: 'pointer',
-                            transform: isMobile ? 'translateX(0)' : (whatsappHandlers.onMouseEnter ? 'translateX(0)' : 'translateX(0)')
-                        }}
-                        {...whatsappHandlers}
-                    >
-                        <MessageCircleMore size={isMobile ? 24 : 28} color={whatsappColor} />
-                        <div style={{ textAlign: 'left' }}>
-                            <p style={{ margin: '0', color: mutedText, fontSize: isMobile ? '0.8em' : '0.9em' }}>WhatsApp</p>
-                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: isMobile ? '0.95em' : '1.05em' }}>
-                                +{whatsappNumber}
-                            </p>
-                        </div>
-                    </a>
+function Contact() {
+    return (
+        <section
+            id="contact"
+            className="section"
+            style={{ background: '#0a1628' }}
+        >
+            {/* Blobs */}
+            <div style={{
+                position: 'absolute', width: '400px', height: '400px',
+                background: 'radial-gradient(circle, rgba(0,119,182,0.2) 0%, transparent 70%)',
+                borderRadius: '50%', top: '50%', left: '-100px',
+                transform: 'translateY(-50%)', filter: 'blur(70px)', pointerEvents: 'none',
+            }} />
+            <div style={{
+                position: 'absolute', width: '300px', height: '300px',
+                background: 'radial-gradient(circle, rgba(255,214,10,0.08) 0%, transparent 70%)',
+                borderRadius: '50%', bottom: '10%', right: '-60px', filter: 'blur(60px)', pointerEvents: 'none',
+            }} />
 
-                    {/* 5. Instagram */}
-                    <a 
-                        href={`https://www.instagram.com/${instagramHandle}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '15px',
-                            padding: isMobile ? '15px' : '20px',
-                            backgroundColor: cardBg,
-                            border: `2px solid rgba(225, 48, 108, 0.2)`,
-                            borderRadius: '12px',
-                            textDecoration: 'none',
-                            transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            cursor: 'pointer',
-                            transform: isMobile ? 'translateX(0)' : (instagramHandlers.onMouseEnter ? 'translateX(0)' : 'translateX(0)')
-                        }}
-                        {...instagramHandlers}
-                    >
-                        <Instagram size={isMobile ? 24 : 28} color={instagramColor} />
-                        <div style={{ textAlign: 'left' }}>
-                            <p style={{ margin: '0', color: mutedText, fontSize: isMobile ? '0.8em' : '0.9em' }}>Instagram</p>
-                            <p style={{ margin: '5px 0 0 0', color: lightText, fontWeight: '600', fontSize: isMobile ? '0.95em' : '1.05em' }}>
-                                @{instagramHandle}
-                            </p>
-                        </div>
-                    </a>
+            <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+                {/* Header */}
+                <div style={{ textAlign: 'center', marginBottom: 'clamp(36px, 6vh, 60px)' }}>
+                    <div className="section-label"><Send size={12} /> Kontak</div>
+                    <h2 className="section-title">
+                        Hubungi <span>Saya</span>
+                    </h2>
+                    <p className="section-subtitle" style={{ margin: '0 auto' }}>
+                        Siap berkolaborasi! Jangan ragu untuk menghubungi saya melalui platform berikut.
+                    </p>
+                </div>
 
+                {/* Contact grid */}
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                    gap: 'clamp(10px, 2vw, 16px)',
+                    maxWidth: '860px',
+                    margin: '0 auto 48px',
+                }}>
+                    {contacts.map(contact => (
+                        <ContactCard key={contact.id} contact={contact} />
+                    ))}
+                </div>
+
+                {/* Footer note */}
+                <div style={{
+                    textAlign: 'center',
+                    padding: '28px',
+                    background: 'linear-gradient(135deg, rgba(0,180,216,0.06), rgba(255,214,10,0.06))',
+                    border: '1px solid rgba(0,180,216,0.15)',
+                    borderRadius: '16px',
+                    maxWidth: '600px',
+                    margin: '0 auto',
+                }}>
+                    <p style={{ fontSize: '1.5rem', marginBottom: '10px' }}>👩‍💻</p>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.7 }}>
+                        Terbuka untuk peluang{' '}
+                        <span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>freelance</span>,{' '}
+                        <span style={{ color: 'var(--color-teal)', fontWeight: 600 }}>magang</span>, maupun{' '}
+                        <span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>kolaborasi proyek</span>.
+                        Mari wujudkan ide brilian kita bersama!
+                    </p>
                 </div>
             </div>
         </section>

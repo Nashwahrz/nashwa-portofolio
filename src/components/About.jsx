@@ -1,208 +1,185 @@
 // src/components/About.jsx
 import React from 'react';
+import { User, Target, Zap, BookOpen } from 'lucide-react';
+
+const goals = [
+    { icon: <Zap size={18} />, text: 'Menciptakan arsitektur Back-end yang stabil dan terukur.' },
+    { icon: <Target size={18} />, text: 'Mengembangkan Front-end yang optimal dan user-friendly.' },
+    { icon: <BookOpen size={18} />, text: 'Mengaplikasikan Web dan Mobile dalam solusi bisnis nyata.' },
+    { icon: <User size={18} />, text: 'Beradaptasi cepat dengan teknologi dan framework baru.' },
+];
 
 function About() {
-    const [hoveredCard, setHoveredCard] = React.useState(false);
-    // FIX 1: Tambahkan state dan logic untuk mendeteksi mobile
-    const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
-
-    React.useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 768);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-    
-    const darkBg = '#0f172a';
-    const primaryColor = '#0ea5e9';
-    const accentColor = '#06b6d4';
-    const lightText = '#f1f5f9';
-    const mutedText = '#cbd5e1';
-    const cardBg = '#1e293b';
-    
-    // Teks biografi
-    const biographyText = (
-        <p style={{ 
-            fontSize: isMobile ? '1em' : '1.1em', // FIX: Font size responsif
-            lineHeight: '1.8', 
-            color: mutedText, 
-            marginBottom: '25px',
-            padding: '20px',
-            borderLeft: `4px solid ${primaryColor}`,
-            backgroundColor: 'rgba(14, 165, 233, 0.05)',
-            borderRadius: '8px'
-        }}>
-            Halo! Saya Nashwa Harzathi Rahma, seorang mahasiswa semester 5 Politeknik Negeri Padang, jurusan Teknologi Informasi, Prodi D3 Manajemen Informatika. 
-            Saya memulai perjalanan saya dengan dasar yang kuat di <span style={{ color: primaryColor, fontWeight: '600' }}>HTML, CSS, dan JavaScript</span>. 
-            Kini, saya berfokus sebagai **Programmer** yang memiliki kemampuan dalam membangun keseluruhan sistem digital.
-            Saya menguasai pembangunan antarmuka pengguna, perancangan logika bisnis, hingga implementasi basis data untuk aplikasi Web dan Mobile. 
-        </p>
-    );
-
-    // Daftar Tujuan Karir
-    const goalList = [
-        "Menciptakan arsitektur Back-end yang stabil dan terukur.",
-        "Mengembangkan aplikasi Front-end yang optimal dan user-friendly.",
-        "Mengaplikasikan pengetahuan Web dan Mobile dalam solusi bisnis.",
-        "Beradaptasi cepat dengan teknologi dan kerangka kerja baru.",
-    ];
-    
     return (
-        <section 
-            id="about" 
-            style={{ 
-                // FIX: Padding vertikal responsif
-                padding: 'clamp(60px, 10vh, 100px) 0', 
-                backgroundColor: darkBg,
-                textAlign: 'center',
-                minHeight: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-                position: 'relative',
-                overflow: 'hidden'
-            }}
+        <section
+            id="about"
+            className="section"
+            style={{ background: 'linear-gradient(180deg, #0a1628 0%, #0d1f3c 100%)' }}
         >
-            <div style={{ 
-                maxWidth: '1100px', 
-                margin: '0 auto', 
-                width: '100%', 
-                position: 'relative', 
-                zIndex: 1,
-                // FIX 2: Menambahkan padding horizontal pada kontainer utama
-                padding: '0 20px' 
-            }}>
-                
-                {/* Header (Font size menggunakan clamp) */}
-                <h2 style={{ 
-                    fontSize: 'clamp(2em, 8vw, 2.5em)', 
-                    marginBottom: '10px',
-                    background: `linear-gradient(135deg, ${lightText}, ${accentColor})`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    fontWeight: '800'
-                }}>
-                    Tentang <span style={{ color: accentColor }}>Saya</span>
-                </h2>
-                <p style={{ 
-                    color: mutedText, 
-                    marginBottom: '60px',
-                    // FIX: Font size responsif
-                    fontSize: isMobile ? '1em' : '1.1em',
-                    fontWeight: '400'
-                }}>
-                    Mengenal lebih dekat perjalanan saya sebagai pengembang.
-                </p>
+            {/* Background blobs */}
+            <div style={{
+                position: 'absolute', width: '400px', height: '400px',
+                background: 'radial-gradient(circle, rgba(0,119,182,0.18) 0%, transparent 70%)',
+                borderRadius: '50%', top: '10%', right: '-80px', filter: 'blur(60px)', pointerEvents: 'none',
+            }} />
 
-                {/* TATA LETAK DUA KOLOM */}
-                <div 
-                    style={{
-                        display: 'flex',
-                        flexWrap: 'wrap', 
-                        alignItems: 'stretch',
-                        justifyContent: 'space-between',
-                        textAlign: 'left',
-                        gap: isMobile ? '30px' : '40px', // FIX: Mengurangi gap di mobile
-                        padding: 0 // FIX 3: Menghapus padding: '0 10px' yang berlebihan
-                    }}
-                >
-                    {/* Kolom Kiri: Teks Cerita */}
-                    <div 
-                        style={{ 
-                            flex: 1, 
-                            minWidth: '280px', // Memastikan stacking di HP
-                        }}
-                    >
-                        <h3 style={{ 
-                            color: accentColor, 
-                            marginBottom: '30px',
-                            // FIX: Font size responsif
-                            fontSize: isMobile ? '1.5em' : '1.8em',
-                            fontWeight: '700'
+            <style>{`
+                @keyframes aboutFadeUp {
+                    from { opacity: 0; transform: translateY(24px); }
+                    to   { opacity: 1; transform: translateY(0); }
+                }
+                .about-anim { opacity: 0; }
+                .about-anim.visible { animation: aboutFadeUp 0.6s ease-out forwards; }
+                .about-anim:nth-child(2).visible { animation-delay: 0.15s; }
+
+                .goal-item {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 14px;
+                    padding: 16px;
+                    background: rgba(17,34,64,0.6);
+                    border: 1px solid rgba(0,180,216,0.12);
+                    border-radius: 12px;
+                    transition: all 0.3s ease;
+                    margin-bottom: 12px;
+                }
+                .goal-item:hover {
+                    border-color: rgba(255,214,10,0.3);
+                    background: rgba(17,34,64,0.9);
+                    transform: translateX(6px);
+                }
+                .goal-icon {
+                    width: 36px; height: 36px;
+                    border-radius: 8px;
+                    background: rgba(255,214,10,0.12);
+                    border: 1px solid rgba(255,214,10,0.25);
+                    display: flex; align-items: center; justify-content: center;
+                    color: var(--color-gold);
+                    flex-shrink: 0;
+                }
+
+                .info-chip {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 8px 16px;
+                    background: rgba(0,180,216,0.08);
+                    border: 1px solid rgba(0,180,216,0.2);
+                    border-radius: 50px;
+                    font-size: 0.85rem;
+                    color: var(--color-teal);
+                    font-weight: 500;
+                    margin: 4px;
+                }
+            `}</style>
+
+            <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+                {/* Header */}
+                <div style={{ textAlign: 'center', marginBottom: 'clamp(40px, 6vh, 64px)' }}>
+                    <div className="section-label"><User size={12} /> Tentang Saya</div>
+                    <h2 className="section-title">
+                        Mengenal <span>Lebih Dekat</span>
+                    </h2>
+                    <p className="section-subtitle" style={{ margin: '0 auto' }}>
+                        Perjalanan saya sebagai mahasiswa Teknologi Informasi yang passionate di bidang pengembangan.
+                    </p>
+                </div>
+
+                {/* Two-column layout */}
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                    gap: 'clamp(24px, 4vw, 48px)',
+                    alignItems: 'start',
+                }}>
+                    {/* Left: Biography */}
+                    <div>
+                        <h3 style={{
+                            fontSize: 'clamp(1.2rem, 3vw, 1.6rem)',
+                            fontWeight: '700',
+                            color: 'var(--color-gold)',
+                            marginBottom: '20px',
                         }}>
-                            Transformasi Kreativitas menjadi Kode Fungsional
+                            Transformasi Kreativitas<br />menjadi Kode Fungsional
                         </h3>
-                        
-                        {biographyText}
-                        
-                        <p style={{ 
-                            // FIX: Font size responsif
-                            fontSize: isMobile ? '1em' : '1.1em', 
-                            lineHeight: '1.8', 
-                            color: mutedText,
-                            padding: '20px',
-                            borderLeft: `4px solid ${accentColor}`,
-                            backgroundColor: 'rgba(6, 182, 212, 0.05)',
-                            borderRadius: '8px'
+
+                        <div style={{
+                            background: 'rgba(17,34,64,0.6)',
+                            border: '1px solid rgba(0,180,216,0.15)',
+                            borderLeft: '4px solid var(--color-teal)',
+                            borderRadius: '12px',
+                            padding: '24px',
+                            marginBottom: '20px',
+                            lineHeight: 1.8,
+                            color: 'var(--text-secondary)',
+                            fontSize: '0.97rem',
                         }}>
-                            Tujuan saya adalah menciptakan pengalaman digital yang <span style={{ color: accentColor, fontWeight: '600' }}>intuitif dan responsif</span>. 
-                            Saya antusias dengan tantangan baru dan selalu siap mengaplikasikan logika pemrograman 
-                            untuk menciptakan solusi web yang efisien.
-                        </p>
+                            Halo! Saya <strong style={{ color: 'var(--text-primary)' }}>Nashwa Harzathi Rahma</strong>,
+                            seorang mahasiswa semester 5{' '}
+                            <span style={{ color: 'var(--color-teal)', fontWeight: 600 }}>Politeknik Negeri Padang</span>,
+                            jurusan Teknologi Informasi, Prodi D3 Manajemen Informatika.
+                        </div>
+
+                        <div style={{
+                            background: 'rgba(17,34,64,0.6)',
+                            border: '1px solid rgba(0,180,216,0.15)',
+                            borderLeft: '4px solid var(--color-gold)',
+                            borderRadius: '12px',
+                            padding: '24px',
+                            marginBottom: '28px',
+                            lineHeight: 1.8,
+                            color: 'var(--text-secondary)',
+                            fontSize: '0.97rem',
+                        }}>
+                            Saya memulai perjalanan dengan{' '}
+                            <span style={{ color: 'var(--color-teal)', fontWeight: 600 }}>HTML, CSS, JavaScript</span>.
+                            Kini berfokus sebagai <strong style={{ color: 'var(--text-primary)' }}>Programmer</strong>{' '}
+                            yang menguasai pembangunan antarmuka, logika bisnis, hingga implementasi basis data untuk
+                            aplikasi <span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>Web dan Mobile</span>.
+                        </div>
+
+                        {/* Info chips */}
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0' }}>
+                            {['Semester 5', 'D3 Manajemen Informatika', 'Politeknik Negeri Padang', 'Padang, Indonesia'].map((info, i) => (
+                                <span key={i} className="info-chip">{info}</span>
+                            ))}
+                        </div>
                     </div>
 
-                    {/* Kolom Kanan: KARTU GOAL BARU */}
-                    <div 
-                        style={{ 
-                            flex: 1, 
-                            minWidth: '280px', // Memastikan stacking di HP
-                            textAlign: 'center',
-                        }}
-                        onMouseEnter={() => setHoveredCard(true)}
-                        onMouseLeave={() => setHoveredCard(false)}
-                    >
-                        <div 
-                            style={{
-                                padding: isMobile ? '40px 30px' : '50px 40px', // FIX: Padding responsif
-                                // ... (hover styles) ...
-                                height: '100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center'
-                            }}
-                        >
-                            <h3 style={{ 
-                                color: lightText, 
-                                marginBottom: '25px',
-                                // FIX: Font size responsif
-                                fontSize: isMobile ? '1.4em' : '1.6em',
-                                fontWeight: '700'
-                            }}>
-                                Fokus dan Target Karir
-                            </h3>
-                            
-                            {/* Menampilkan Goal dalam bentuk daftar poin yang terstruktur */}
-                            <ul style={{ 
-                                listStyle: 'none', 
-                                padding: 0, 
-                                textAlign: 'left',
-                                margin: '0 auto',
-                            }}>
-                                {goalList.map((goal, index) => (
-                                    <li key={index} style={{ 
-                                        color: mutedText, 
-                                        marginBottom: '15px', 
-                                        display: 'flex', 
-                                        alignItems: 'flex-start',
-                                        // FIX: Font size responsif
-                                        fontSize: isMobile ? '0.95em' : '1.05em' 
-                                    }}>
-                                        <span style={{ color: accentColor, marginRight: '10px', fontSize: '1.2em' }}>
-                                            •
-                                        </span>
-                                        {goal}
-                                    </li>
-                                ))}
-                            </ul>
-                            
-                            <div style={{ 
-                                marginTop: '30px', 
-                                fontSize: '4em',
-                                transition: 'transform 0.4s ease',
-                                transform: hoveredCard ? 'scale(1.2) rotate(10deg)' : 'scale(1) rotate(0deg)'
-                            }}>
-                                🚀
+                    {/* Right: Goals */}
+                    <div>
+                        <h3 style={{
+                            fontSize: 'clamp(1.2rem, 3vw, 1.6rem)',
+                            fontWeight: '700',
+                            color: 'var(--text-primary)',
+                            marginBottom: '24px',
+                        }}>
+                            🎯 Fokus & Target Karir
+                        </h3>
+
+                        {goals.map((goal, i) => (
+                            <div key={i} className="goal-item">
+                                <div className="goal-icon">{goal.icon}</div>
+                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.6, margin: 0 }}>
+                                    {goal.text}
+                                </p>
                             </div>
+                        ))}
+
+                        {/* Rocket card */}
+                        <div style={{
+                            marginTop: '24px',
+                            padding: '24px',
+                            background: 'linear-gradient(135deg, rgba(255,214,10,0.08), rgba(0,180,216,0.08))',
+                            border: '1px solid rgba(255,214,10,0.2)',
+                            borderRadius: '14px',
+                            textAlign: 'center',
+                        }}>
+                            <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🚀</div>
+                            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.6 }}>
+                                Antusias dengan tantangan baru dan selalu siap menciptakan solusi digital yang{' '}
+                                <span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>efisien & inovatif</span>.
+                            </p>
                         </div>
                     </div>
                 </div>
